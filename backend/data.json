@@ -1,0 +1,34 @@
+[
+  {
+    "id": 1,
+    "name": "Oluwatobiloba Akinola",
+    "email": "tobi.akinola@example.com",
+    "primarySkill": "Web Development",
+    "specificSkills": "HTML, CSS, JavaScript, React",
+    "yearsExperience": 3
+  },
+  {
+    "id": 2,
+    "name": "Blessing Adeyemi",
+    "email": "blessing.a@example.com",
+    "primarySkill": "Data Science",
+    "specificSkills": "Python, R, Machine Learning, SQL",
+    "yearsExperience": 5
+  },
+  {
+    "id": 3,
+    "name": "Chinedu Okoro",
+    "email": "chinedu.o@example.com",
+    "primarySkill": "Mobile Development",
+    "specificSkills": "Java, Android SDK, Kotlin",
+    "yearsExperience": 4
+  },
+  {
+    "id": 4,
+    "name": "Fatima Bello",
+    "email": "fatima.b@example.com",
+    "primarySkill": "UI/UX Design",
+    "specificSkills": "Figma, Sketch, Adobe XD, User Research",
+    "yearsExperience": 2
+  }
+]

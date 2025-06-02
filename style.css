@@ -1,0 +1,460 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+    background-color: #f4f4f4;
+    color: #333;
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 20px auto;
+    background: #fff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+h1, h2 {
+    color: #0056b3;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* NEW: Authentication Section Styles */
+.auth-section {
+    background-color: #e9ecef;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 30px;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+    text-align: center;
+}
+
+.user-status-area {
+    font-size: 1.1em;
+    font-weight: bold;
+    margin-bottom: 15px;
+    color: #0056b3;
+}
+
+.user-status-area span {
+    color: #333;
+}
+
+.user-status-area #currentUserRole {
+    text-transform: capitalize; /* Make role look nicer */
+}
+
+.login-form-area {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px dashed #ccc;
+}
+
+.login-form-area h2 {
+    margin-top: 0;
+    font-size: 1.5em;
+}
+
+.auth-button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.3s ease;
+    margin-top: 10px;
+}
+
+.auth-button:hover {
+    background-color: #0056b3;
+}
+
+.logout-button {
+    background-color: #dc3545; /* Red for logout */
+    margin-left: 15px;
+}
+
+.logout-button:hover {
+    background-color: #c82333;
+}
+
+/* Toggle Form Button */
+#toggleFormButton {
+    display: block;
+    width: 100%;
+    padding: 10px 15px;
+    margin-bottom: 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1.1em;
+    transition: background-color 0.3s ease;
+}
+
+#toggleFormButton:hover {
+    background-color: #0056b3;
+}
+/* Ensure toggle button is hidden initially */
+#toggleFormButton[style*="display: none;"] {
+    display: none !important;
+}
+
+
+/* Form Section */
+.form-section {
+    background-color: #e9ecef;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 30px;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group input[type="number"],
+.form-group input[type="password"], /* NEW: for password input */
+.form-group select {
+    width: calc(100% - 22px); /* Account for padding and border */
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box; /* Include padding and border in the element's total width and height */
+    font-size: 1em;
+}
+
+form button[type="submit"] {
+    display: block;
+    width: 100%;
+    padding: 10px 15px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1.1em;
+    transition: background-color 0.3s ease;
+}
+
+form button[type="submit"]:hover {
+    background-color: #218838;
+}
+
+/* Feedback Messages */
+.feedback-message {
+    padding: 10px;
+    margin-top: 15px;
+    border-radius: 5px;
+    text-align: center;
+    transition: opacity 0.5s ease-in-out;
+    opacity: 0;
+}
+
+.feedback-message.show { /* NEW: Add show class for immediate visibility */
+    opacity: 1;
+}
+
+.feedback-message.success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+    opacity: 1;
+}
+
+.feedback-message.error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+    opacity: 1;
+}
+
+/* Input-specific error messages */
+.input-error {
+    color: red;
+    font-size: 0.85em;
+    margin-left: 5px;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+
+/* Filters Section */
+.filters-section {
+    background-color: #e9ecef;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 30px;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    justify-content: center;
+    align-items: flex-end;
+}
+
+.filter-group {
+    flex: 1;
+    min-width: 180px;
+}
+
+.filter-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.filter-group input,
+.filter-group select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+/* Export Button Style */
+.export-button {
+    width: 100%;
+    padding: 8px 15px;
+    background-color: #6c757d;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.3s ease;
+    margin-top: 25px;
+}
+
+.export-button:hover {
+    background-color: #5a6268;
+}
+
+
+/* Table Styles */
+.talents-list-section {
+    margin-top: 30px;
+}
+
+#talentTable {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+#talentTable th, #talentTable td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: left;
+    vertical-align: middle;
+}
+
+#talentTable th {
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+    position: relative;
+}
+
+#talentTable tbody tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+#talentTable tbody tr:hover {
+    background-color: #e0e0e0;
+}
+
+/* Action Buttons */
+.actions button {
+    padding: 6px 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9em;
+    margin-right: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.actions button:hover {
+    opacity: 0.8;
+}
+
+.actions button.view-btn { /* View button */
+    background-color: #17a2b8; /* Info color */
+    color: white;
+}
+
+.actions button.view-btn:hover {
+    background-color: #138496;
+}
+
+.actions button.edit-btn { /* Edit button */
+    background-color: #007bff;
+    color: white;
+}
+
+.actions button.delete-btn { /* Delete button */
+    background-color: #dc3545;
+    color: white;
+}
+
+/* Pagination Controls */
+.pagination-section {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.pagination-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    padding: 10px;
+    background-color: #e9ecef;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.pagination-controls button {
+    padding: 8px 15px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.3s ease;
+}
+
+.pagination-controls button:hover:not(:disabled) {
+    background-color: #0056b3;
+}
+
+.pagination-controls button:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+}
+
+.pagination-controls span {
+    font-weight: bold;
+    color: #333;
+}
+
+
+/* Modal Styles */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1000; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    padding-top: 60px; /* Location of the box */
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 5% auto; /* 5% from the top and centered */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%; /* Could be more or less, depending on screen size */
+    max-width: 600px; /* Max width for larger screens */
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    position: relative; /* For the close button */
+}
+
+.modal-content h2 {
+    color: #0056b3;
+    text-align: center;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+}
+
+.detail-item {
+    margin-bottom: 10px;
+    padding: 5px 0;
+    border-bottom: 1px dotted #eee;
+}
+
+.detail-item:last-child {
+    border-bottom: none;
+}
+
+.detail-item strong {
+    display: inline-block;
+    width: 150px; /* Align labels */
+    color: #555;
+}
+
+
+.close-button {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    cursor: pointer;
+}
+
+.close-button:hover,
+.close-button:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .filters {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .filter-group {
+        min-width: unset;
+        width: 100%;
+    }
+    .form-group input[type="text"],
+    .form-group input[type="email"],
+    .form-group input[type="number"],
+    .form-group input[type="password"], /* NEW: for password input */
+    .form-group select {
+        width: 100%;
+    }
+    .export-button {
+        margin-top: 10px;
+    }
+    .modal-content {
+        width: 95%; /* Make modal wider on small screens */
+        margin: 20px auto; /* Adjust margin */
+    }
+    .detail-item strong {
+        width: 120px; /* Adjust label width for small screens */
+    }
+}
