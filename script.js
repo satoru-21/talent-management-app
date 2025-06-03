@@ -65,8 +65,8 @@ let currentUserRole = 'guest'; // 'guest', 'user', 'admin'
 
 
 // Base URL for your Flask API
-const API_BASE_URL = 'http://127.0.0.1:5000/api/talents'; // Main talent API
-const AUTH_API_BASE_URL = 'http://127.0.0.1:5000/api'; // For auth endpoints
+const API_BASE_URL = 'https://my-flask-api.onrender.com/api/talents'; // Use your actual Render backend URL
+const AUTH_API_BASE_URL = 'https://my-flask-api.onrender.com/api'; // Use your actual Render backend URL
 
 // Initially hide the form section
 talentFormSection.style.display = 'none';
