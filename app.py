@@ -12,7 +12,15 @@ from werkzeug.security import generate_password_hash, check_password_hash
 app = Flask(__name__)
 # NEW: Secret key for session management (IMPORTANT: Change this to a strong, random key in production)
 app.config['SECRET_KEY'] = 'your_super_secret_and_complex_key_here_12345'
-CORS(app, supports_credentials=True) # NEW: supports_credentials=True is crucial for sending cookies (sessions)
+from flask_cors import CORS
+import os # Make sure this is imported if not already
+
+app = Flask(__name__)
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'default_dev_key_for_testing')
+
+# Replace 'https://your-talent-frontend.onrender.com' with the ACTUAL URL of your Render Static Site
+CORS(app, origins=["https://talent-frontend-app.onrender.com"], supports_credentials=True)
+# Ensure you replace 'talent-frontend' with the exact name/subdomain Render gave your static site!
 
 # --- Flask-Login Setup ---
 login_manager = LoginManager()
