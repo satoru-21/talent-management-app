@@ -65,9 +65,8 @@ let currentUserRole = 'guest'; // 'guest', 'user', 'admin'
 
 
 // Base URL for your Flask API
-const API_BASE_URL = 'https://talent-management-app-9e8m.onrender.com'; // Use your actual Render backend URL
-const AUTH_API_BASE_URL = 'https://talent-management-app-9e8m.onrender.com'; // Use your actual Render backend URL
-
+const API_BASE_URL = 'https://talent-management-app-9e8m.onrender.com/api/talents'; // <-- CORRECTED: Added /api/talents
+const AUTH_API_BASE_URL = 'https://talent-management-app-9e8m.onrender.com/api'; // <-- CORRECTED: Added /api
 // Initially hide the form section
 talentFormSection.style.display = 'none';
 toggleFormButton.style.display = 'none'; // Hide toggle button initially
