@@ -7,111 +7,80 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
-        <h1>Talent Management</h1>
+    <header>
+        <h1>Talent Management System</h1>
+        <div id="loggedInStatus" style="display: none;">
+            Logged in as: <span id="currentUser"></span> (<span id="currentUserRole"></span>)
+            <button id="logoutButton">Logout</button>
+        </div>
+    </header>
 
-        <section id="authSection" class="auth-section">
-            <div id="loggedInStatus" class="user-status-area">
-                Logged in as: <span id="currentUser">Guest</span> (<span id="currentUserRole"></span>)
-                <button id="logoutButton" class="auth-button logout-button" style="display: none;">Logout</button>
+    <main>
+        <section class="filters">
+            <h2>Filters & Search</h2>
+            <div>
+                <label for="primarySkillFilter">Primary Skill:</label>
+                <select id="primarySkillFilter">
+                    <option value="">All Skills</option>
+                    </select>
             </div>
-
-            <div id="loginFormArea" class="login-form-area">
-                <h2>Login</h2>
-                <form id="loginForm">
-                    <div class="form-group">
-                        <label for="username">Username:</label>
-                        <input type="text" id="username" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="password">Password:</label>
-                        <input type="password" id="password" required>
-                    </div>
-                    <button type="submit" class="auth-button">Login</button>
-                </form>
-                <div id="authFeedback" class="feedback-message"></div>
+            <div>
+                <label for="minExperienceFilter">Min Experience:</label>
+                <input type="number" id="minExperienceFilter" placeholder="e.g., 2">
+            </div>
+            <div>
+                <label for="maxExperienceFilter">Max Experience:</label>
+                <input type="number" id="maxExperienceFilter" placeholder="e.g., 10">
+            </div>
+            <div>
+                <label for="searchInput">Search:</label>
+                <input type="text" id="searchInput" placeholder="Search by name, email, skill">
             </div>
         </section>
-        <button id="toggleFormButton">Show Add Talent Form</button>
 
-        <section id="talentFormSection" class="form-section">
+        <button id="toggleFormButton" class="add-talent-button" style="display: none;">Show Add Talent Form</button>
+        <p id="formFeedback" class="feedback-message"></p>
+
+        <section id="talentFormSection" class="form-container" style="display: none;">
             <h2>Add New Talent</h2>
             <form id="talentForm">
-                <div class="form-group">
-                    <label for="name">Name:</label>
-                    <input type="text" id="name" required>
-                    <span id="nameError" class="input-error"></span>
-                </div>
+                <input type="hidden" id="talentId">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" required>
+                <span id="nameError" class="input-error"></span>
 
-                <div class="form-group">
-                    <label for="email">Email:</label>
-                    <input type="email" id="email" required>
-                    <span id="emailError" class="input-error"></span>
-                </div>
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+                <span id="emailError" class="input-error"></span>
 
-                <div class="form-group">
-                    <label for="primarySkill">Primary Skill:</label>
-                    <input type="text" id="primarySkill" required>
-                    <span id="primarySkillError" class="input-error"></span>
-                </div>
+                <label for="primarySkill">Primary Skill:</label>
+                <input type="text" id="primarySkill" name="primarySkill" required>
+                <span id="primarySkillError" class="input-error"></span>
 
-                <div class="form-group">
-                    <label for="specificSkills">Specific Skills (comma-separated):</label>
-                    <input type="text" id="specificSkills">
-                </div>
+                <label for="specificSkills">Specific Skills (comma-separated):</label>
+                <input type="text" id="specificSkills" name="specificSkills">
+                <span id="specificSkillsError" class="input-error"></span>
 
-                <div class="form-group">
-                    <label for="yearsExperience">Years Experience:</label>
-                    <input type="number" id="yearsExperience" required min="0">
-                    <span id="yearsExperienceError" class="input-error"></span>
-                </div>
+                <label for="yearsExperience">Years Experience:</label>
+                <input type="number" id="yearsExperience" name="yearsExperience" required min="0">
+                <span id="yearsExperienceError" class="input-error"></span>
 
                 <button type="submit">Add Talent</button>
             </form>
-            <div id="formFeedback" class="feedback-message"></div>
         </section>
 
-        <section class="filters-section">
-            <h2>Filter Talents</h2>
-            <div class="filters">
-                <div class="filter-group">
-                    <label for="primarySkillFilter">Primary Skill:</label>
-                    <select id="primarySkillFilter">
-                        <option value="">All Skills</option>
-                        </select>
-                </div>
-
-                <div class="filter-group">
-                    <label for="minExperienceFilter">Min Exp:</label>
-                    <input type="number" id="minExperienceFilter" placeholder="Min" min="0">
-                </div>
-
-                <div class="filter-group">
-                    <label for="maxExperienceFilter">Max Exp:</label>
-                    <input type="number" id="maxExperienceFilter" placeholder="Max" min="0">
-                </div>
-
-                <div class="filter-group">
-                    <label for="searchInput">Search:</label>
-                    <input type="text" id="searchInput" placeholder="Enter name or skills">
-                </div>
-                <div class="filter-group">
-                    <button id="exportCsvBtn" class="export-button">Export to CSV</button>
-                </div>
-            </div>
-        </section>
-
-        <section class="talents-list-section">
-            <h2>Registered Talents</h2>
+        <section class="talent-list">
+            <h2>Talent Roster</h2>
+            <button id="exportCsvBtn" style="display: none;">Export to CSV</button>
             <table id="talentTable">
                 <thead>
                     <tr>
-                        <th data-sort="name">NAME</th>
-                        <th data-sort="email">EMAIL</th>
-                        <th data-sort="primarySkill">PRIMARY SKILL</th>
-                        <th data-sort="specificSkills">SPECIFIC SKILLS</th>
-                        <th data-sort="yearsExperience">YEARS EXP.</th>
-                        <th>ACTIONS</th>
+                        <th data-sort="name">Name</th>
+                        <th data-sort="email">Email</th>
+                        <th data-sort="primarySkill">Primary Skill</th>
+                        <th data-sort="specificSkills">Specific Skills</th>
+                        <th data-sort="yearsExperience">Years Experience</th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -119,36 +88,23 @@
             </table>
         </section>
 
-        <section class="pagination-section">
-            <div class="pagination-controls">
-                <button id="prevPageBtn" disabled>&laquo; Previous</button>
-                <span id="pageInfo">Page 1 of 1</span>
-                <button id="nextPageBtn" disabled>Next &raquo;</button>
-            </div>
-        </section>
+        <div class="pagination">
+            <button id="prevPageBtn">Previous</button>
+            <span id="pageInfo"></span>
+            <button id="nextPageBtn">Next</button>
+        </div>
+    </main>
 
-    </div> <div id="talentDetailsModal" class="modal">
+    <div id="talentDetailsModal" class="modal">
         <div class="modal-content">
             <span class="close-button">&times;</span>
             <h2>Talent Details</h2>
-            <div class="detail-item">
-                <strong>ID:</strong> <span id="detailId"></span>
-            </div>
-            <div class="detail-item">
-                <strong>Name:</strong> <span id="detailName"></span>
-            </div>
-            <div class="detail-item">
-                <strong>Email:</strong> <span id="detailEmail"></span>
-            </div>
-            <div class="detail-item">
-                <strong>Primary Skill:</strong> <span id="detailPrimarySkill"></span>
-            </div>
-            <div class="detail-item">
-                <strong>Specific Skills:</strong> <span id="detailSpecificSkills"></span>
-            </div>
-            <div class="detail-item">
-                <strong>Years Experience:</strong> <span id="detailYearsExperience"></span>
-            </div>
+            <p><strong>ID:</strong> <span id="detailId"></span></p>
+            <p><strong>Name:</strong> <span id="detailName"></span></p>
+            <p><strong>Email:</strong> <span id="detailEmail"></span></p>
+            <p><strong>Primary Skill:</strong> <span id="detailPrimarySkill"></span></p>
+            <p><strong>Specific Skills:</strong> <span id="detailSpecificSkills"></span></p>
+            <p><strong>Years Experience:</strong> <span id="detailYearsExperience"></span></p>
         </div>
     </div>
 
