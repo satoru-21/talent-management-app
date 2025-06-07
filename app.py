@@ -1,26 +1,24 @@
-from flask import Flask, request, jsonify, make_response, redirect, url_for
+from flask import Flask, request, jsonify, make_response, redirect, url_for, session
 from flask_cors import CORS
 import sqlite3
 import re
 import csv
 import io
+import os # Make sure os is imported for SECRET_KEY
 
 # NEW IMPORTS FOR AUTHENTICATION
 from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
+from datetime import timedelta # NEW: for session lifetime
 
 app = Flask(__name__)
-# NEW: Secret key for session management (IMPORTANT: Change this to a strong, random key in production)
-app.config['SECRET_KEY'] = 'your_super_secret_and_complex_key_here_12345'
-from flask_cors import CORS
-import os # Make sure this is imported if not already
+# IMPORTANT: Get SECRET_KEY from environment variable in production
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'a_strong_default_dev_key_for_testing_purposes') # Use a very strong key in production!
+CORS(app, supports_credentials=True) # supports_credentials=True is crucial for sending cookies (sessions)
 
-app = Flask(__name__)
-app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'default_dev_key_for_testing')
+# NEW: Configure permanent session and lifetime (e.g., 30 minutes)
+app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=30)
 
-# Replace 'https://your-talent-frontend.onrender.com' with the ACTUAL URL of your Render Static Site
-CORS(app, origins=["https://talent-frontend-app.onrender.com"], supports_credentials=True)
-# Ensure you replace 'talent-frontend' with the exact name/subdomain Render gave your static site!
 
 # --- Flask-Login Setup ---
 login_manager = LoginManager()
@@ -152,7 +150,9 @@ def login():
 
     if user_data and check_password_hash(user_data['password_hash'], password):
         user = User(user_data['id'], user_data['username'], user_data['role'])
-        login_user(user)
+        login_user(user, remember=True) # NEW: remember=True to make session permanent
+        session.permanent = True # NEW: Set session to permanent
+        app.permanent_session_lifetime = timedelta(minutes=30) # NEW: Ensure lifetime is set explicitly (though also in config)
         return jsonify({"message": "Login successful", "username": user.username, "role": user.role}), 200
     return jsonify({"error": "Invalid username or password"}), 401
 
@@ -165,6 +165,7 @@ def logout():
 
 # NEW: Get Current User Status
 @app.route('/api/status', methods=['GET'])
+@login_required # This endpoint now requires login.
 def get_status():
     if current_user.is_authenticated:
         return jsonify({
@@ -172,7 +173,7 @@ def get_status():
             "username": current_user.username,
             "role": current_user.role
         }), 200
-    return jsonify({"is_authenticated": False}), 200
+    return jsonify({"is_authenticated": False}), 200 # This line should technically not be reached if @login_required works
 
 
 # GET all talents, and also handle filtering, searching, pagination, and sorting
@@ -251,10 +252,14 @@ def get_all_talents():
     })
 
 # Endpoint to export talents to CSV
-@app.route('/api/talents/export', methods=['GET'])
+@app.route('/api/talents/export', methods=['GET', 'OPTIONS']) # ADDED OPTIONS
 @login_required # Require login to export
 def export_talents_csv():
-    # NEW: Authorization check - only admins can export
+    # NEW: Handle OPTIONS preflight for this route
+    if request.method == 'OPTIONS':
+        return jsonify({"status": "ok"}), 200
+
+    # Authorization check - only admins can export
     if current_user.role != 'admin':
         return jsonify({"error": "Forbidden: Only administrators can export data."}), 403
 
@@ -309,10 +314,14 @@ def export_talents_csv():
     return response
 
 # POST a new talent
-@app.route('/api/talents', methods=['POST'])
+@app.route('/api/talents', methods=['POST', 'OPTIONS']) # ADDED OPTIONS
 @login_required # Require login to add talent
 def add_talent():
-    # NEW: Authorization check - only admins can add
+    # NEW: Handle OPTIONS preflight for this route
+    if request.method == 'OPTIONS':
+        return jsonify({"status": "ok"}), 200
+
+    # Authorization check - only admins can add
     if current_user.role != 'admin':
         return jsonify({"error": "Forbidden: Only administrators can add new talents."}), 403
 
@@ -371,10 +380,14 @@ def add_talent():
         return jsonify({"error": str(e)}), 500
 
 # PUT (Update) an existing talent by ID
-@app.route('/api/talents/<int:talent_id>', methods=['PUT'])
+@app.route('/api/talents/<int:talent_id>', methods=['PUT', 'OPTIONS']) # ADDED OPTIONS
 @login_required # Require login to update talent
 def update_talent(talent_id):
-    # NEW: Authorization check - only admins can update
+    # NEW: Handle OPTIONS preflight for this route
+    if request.method == 'OPTIONS':
+        return jsonify({"status": "ok"}), 200
+
+    # Authorization check - only admins can update
     if current_user.role != 'admin':
         return jsonify({"error": "Forbidden: Only administrators can update talents."}), 403
 
@@ -449,10 +462,14 @@ def get_talent_by_id(talent_id):
     return jsonify({"error": "Talent not found"}), 404
 
 # DELETE a talent by ID
-@app.route('/api/talents/<int:talent_id>', methods=['DELETE'])
+@app.route('/api/talents/<int:talent_id>', methods=['DELETE', 'OPTIONS']) # ADDED OPTIONS
 @login_required # Require login to delete talent
 def delete_talent(talent_id):
-    # NEW: Authorization check - only admins can delete
+    # NEW: Handle OPTIONS preflight for this route
+    if request.method == 'OPTIONS':
+        return jsonify({"status": "ok"}), 200
+
+    # Authorization check - only admins can delete
     if current_user.role != 'admin':
         return jsonify({"error": "Forbidden: Only administrators can delete talents."}), 403
 
