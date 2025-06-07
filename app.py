@@ -19,6 +19,15 @@ CORS(app, supports_credentials=True) # supports_credentials=True is crucial for 
 # NEW: Configure permanent session and lifetime (e.g., 30 minutes)
 app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=30)
 
+# --- START OF ADDED/MODIFIED LINES FOR COOKIE FIX ---
+# Configure session cookie for cross-site requests in production
+# SameSite=None is required for cross-site cookies, and Secure=True is required with SameSite=None
+app.config.update(
+    SESSION_COOKIE_SAMESITE="None",
+    SESSION_COOKIE_SECURE=True
+)
+# --- END OF ADDED/MODIFIED LINES FOR COOKIE FIX ---
+
 
 # --- Flask-Login Setup ---
 login_manager = LoginManager()
@@ -117,14 +126,14 @@ def init_db():
             print("Adding default admin user...")
             admin_password = generate_password_hash("adminpass") # Use a strong password in production!
             cursor.execute("INSERT INTO users (username, password_hash, role) VALUES (?, ?, ?)",
-                           ("admin", admin_password, "admin"))
+                            ("admin", admin_password, "admin"))
             db.commit()
             print("Default admin user 'admin' created with password 'adminpass'.")
 
             print("Adding default regular user...")
             user_password = generate_password_hash("userpass") # Use a strong password in production!
             cursor.execute("INSERT INTO users (username, password_hash, role) VALUES (?, ?, ?)",
-                           ("user", user_password, "user"))
+                            ("user", user_password, "user"))
             db.commit()
             print("Default user 'user' created with password 'userpass'.")
 
@@ -152,7 +161,7 @@ def login():
         user = User(user_data['id'], user_data['username'], user_data['role'])
         login_user(user, remember=True) # NEW: remember=True to make session permanent
         session.permanent = True # NEW: Set session to permanent
-        app.permanent_session_lifetime = timedelta(minutes=30) # NEW: Ensure lifetime is set explicitly (though also in config)
+        # app.permanent_session_lifetime = timedelta(minutes=30) # This line is redundant if set in app.config globally
         return jsonify({"message": "Login successful", "username": user.username, "role": user.role}), 200
     return jsonify({"error": "Invalid username or password"}), 401
 
@@ -431,6 +440,7 @@ def update_talent(talent_id):
         return jsonify({"errors": errors}), 400
 
     try:
+        # Corrected SQL UPDATE statement for multiple columns
         cursor.execute('''
             UPDATE talents
             SET name = ?, email = ?, primarySkill = ?, specificSkills = ?, yearsExperience = ?
