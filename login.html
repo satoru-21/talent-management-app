@@ -11,24 +11,34 @@
         <h1>Login to Talent Management System</h1>
     </header>
 
+    <!-- NEW: auth-container wrapper to center the login section on the page -->
     <main>
-        <section id="authSection" class="auth-section">
-            <h2>User Login</h2>
-            <div id="loginFormArea" class="form-container">
-                <form id="loginForm">
-                    <label for="username">Username:</label>
-                    <input type="text" id="username" name="username" required>
+        <div class="auth-container">
+            <section id="authSection" class="auth-section">
+                <h2>User Login</h2>
+                <div id="loginFormArea" class="form-container">
+                    <form id="loginForm">
+                        <!-- NEW: Wrap each label/input pair in a .form-group -->
+                        <div class="form-group">
+                            <label for="username">Username:</label>
+                            <input type="text" id="username" name="username" required>
+                        </div>
 
-                    <label for="password">Password:</label>
-                    <input type="password" id="password" name="password" required>
+                        <!-- NEW: Wrap each label/input pair in a .form-group -->
+                        <div class="form-group">
+                            <label for="password">Password:</label>
+                            <input type="password" id="password" name="password" required>
+                        </div>
 
-                    <button type="submit">Login</button>
-                </form>
-                <p id="authFeedback" class="feedback-message"></p>
-            </div>
-        </section>
+                        <button type="submit" class="auth-button">Login</button>
+                    </form>
+                    <p id="authFeedback" class="feedback-message"></p>
+                </div>
+            </section>
+        </div>
     </main>
 
+    <!-- The script.js handles the login logic and redirects -->
     <script src="script.js"></script>
 </body>
-</html> 
+</html>
