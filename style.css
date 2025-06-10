@@ -1,15 +1,15 @@
 /* General Body Styles */
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* A slightly more modern font */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
-    padding: 0; /* Remove padding from body, let #appContent handle it */
-    background-color: #eef2f7; /* Lighter, more modern background */
+    padding: 0;
+    background-color: #eef2f7;
     color: #333;
     line-height: 1.6;
-    display: flex; /* Use flexbox to center content */
+    display: flex;
     justify-content: center;
-    align-items: flex-start; /* Align to the top of the viewport */
-    min-height: 100vh; /* Ensure body takes full viewport height */
+    align-items: flex-start;
+    min-height: 100vh;
 }
 
 /* Loading Overlay Styles */
@@ -19,27 +19,27 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: #ffffff; /* White background for loading */
+    background-color: #ffffff;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     z-index: 1000;
     font-size: 1.5em;
-    color: #007bff; /* Match primary color */
+    color: #007bff;
     text-align: center;
     transition: opacity 0.5s ease-in-out;
 }
 
 /* Spinner for Loading Overlay */
 .spinner {
-    border: 8px solid #f3f3f3; /* Light grey */
-    border-top: 8px solid #007bff; /* Primary blue */
+    border: 8px solid #f3f3f3;
+    border-top: 8px solid #007bff;
     border-radius: 50%;
-    width: 60px; /* Slightly larger spinner */
+    width: 60px;
     height: 60px;
     animation: spin 1s linear infinite;
-    margin-bottom: 20px; /* More space */
+    margin-bottom: 20px;
 }
 
 /* Spinner Animation */
@@ -53,13 +53,13 @@ body {
     display: none;
     opacity: 0;
     transition: opacity 0.5s ease-in-out;
-    width: 100%; /* Take full width of parent (body) */
-    max-width: 1200px; /* Maximum width for the entire app */
-    margin: 40px auto; /* More vertical margin */
+    width: 100%;
+    max-width: 1200px;
+    margin: 40px auto;
     background: #ffffff;
     padding: 30px;
-    border-radius: 12px; /* Slightly more rounded corners */
-    box-shadow: 0 4px 20px rgba(0,0,0,0.08); /* Stronger, softer shadow */
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
 }
 
 /* Class to show content after loading */
@@ -71,41 +71,83 @@ body {
 h1, h2 {
     color: #0056b3;
     text-align: center;
-    margin-bottom: 25px; /* More space below headings */
-    font-weight: 600; /* Slightly bolder headings */
+    margin-bottom: 25px;
+    font-weight: 600;
 }
 
 h1 {
-    font-size: 2.5em; /* Larger main title */
+    font-size: 2.5em;
 }
 
 h2 {
     font-size: 1.8em;
 }
 
-/* Authentication Section Styles (Kept as is, but consider combining with .form-container if similar) */
+/* --- Login Page/Authentication Section Styles (Enhanced) --- */
+.auth-container { /* NEW: A wrapper for the entire auth area, can be centered easily */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: calc(100vh - 80px); /* Adjust to fill most of the screen */
+    padding: 20px;
+    box-sizing: border-box;
+}
+
 .auth-section {
-    background-color: #f7f9fc; /* Lighter background for auth section */
-    padding: 25px;
-    border-radius: 10px;
-    margin-bottom: 30px;
-    box-shadow: inset 0 1px 4px rgba(0,0,0,0.05);
+    background-color: #ffffff; /* White background to make it stand out */
+    padding: 40px; /* More padding */
+    border-radius: 12px; /* Consistent rounded corners */
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15); /* Prominent shadow */
+    margin: auto; /* Center it */
+    max-width: 450px; /* Max width for a clean login form */
+    width: 100%; /* Ensure it takes full width up to max-width */
     text-align: center;
+    border: 1px solid #e0e0e0; /* Subtle border */
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth hover effect */
+}
+
+.auth-section:hover {
+    transform: translateY(-5px); /* Slight lift on hover */
+    box-shadow: 0 12px 35px rgba(0,0,0,0.2);
+}
+
+.auth-section h2 {
+    color: #0056b3;
+    font-size: 2em; /* Larger login heading */
+    margin-bottom: 30px;
+    position: relative;
+    padding-bottom: 15px;
+}
+
+.auth-section h2::after { /* Underline effect for the heading */
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 3px;
+    background-color: #007bff;
+    border-radius: 2px;
 }
 
 .user-status-area {
     font-size: 1.1em;
     font-weight: bold;
-    margin-bottom: 15px;
+    margin-bottom: 25px; /* More space below status */
     color: #0056b3;
-    display: flex; /* Use flexbox to center text and button */
+    display: flex;
     justify-content: center;
     align-items: center;
-    gap: 10px; /* Space between text and button */
+    gap: 10px;
+    padding: 15px;
+    background-color: #f7f9fc;
+    border-radius: 8px;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
 }
 
 .user-status-area span {
-    color: #555; /* Slightly darker text for better readability */
+    color: #555;
 }
 
 .user-status-area #currentUserRole {
@@ -113,59 +155,101 @@ h2 {
 }
 
 .login-form-area {
-    margin-top: 20px;
-    padding-top: 20px;
-    border-top: 1px dashed #e0e0e0; /* Lighter dashed border */
+    margin-top: 30px; /* More space above the form */
+    padding-top: 30px;
+    border-top: 1px solid #f0f0f0; /* Softer separation line */
 }
 
-.login-form-area h2 {
-    margin-top: 0;
-    font-size: 1.5em;
-    color: #333; /* Darker heading for login */
+/* Form Group for inputs */
+.form-group {
+    margin-bottom: 20px; /* More space between form fields */
+    text-align: left; /* Align labels/inputs left */
 }
 
-.auth-button {
-    padding: 10px 25px; /* More padding */
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 6px; /* Slightly more rounded buttons */
-    cursor: pointer;
-    font-size: 1em;
-    font-weight: 600; /* Bolder button text */
-    transition: background-color 0.3s ease, transform 0.2s ease; /* Add transform for subtle animation */
-    margin-top: 10px;
-}
-
-.auth-button:hover {
-    background-color: #0056b3;
-    transform: translateY(-2px); /* Lift effect on hover */
-}
-
-.logout-button {
-    background-color: #dc3545;
-    margin-left: 15px;
-}
-
-.logout-button:hover {
-    background-color: #c82333;
-}
-
-/* Toggle Form Button */
-#toggleFormButton {
+.form-group label {
     display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #555;
+    font-size: 0.95em;
+}
+
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group input[type="password"],
+.form-group input[type="number"],
+.form-group select {
     width: 100%;
-    padding: 12px 15px; /* More padding */
-    margin-bottom: 30px; /* More space below */
-    background-color: #28a745; /* Green for add/show form */
+    padding: 12px;
+    border: 1px solid #dcdcdc;
+    border-radius: 6px;
+    box-sizing: border-box;
+    font-size: 1em;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 0 3px rgba(0,123,255,0.25);
+    outline: none;
+}
+
+/* Buttons */
+.auth-button,
+form button[type="submit"] { /* Combined for consistent styling */
+    padding: 12px 25px;
+    background-color: #007bff;
     color: white;
     border: none;
     border-radius: 8px; /* More rounded */
     cursor: pointer;
-    font-size: 1.15em; /* Slightly larger font */
+    font-size: 1.1em; /* Slightly larger font */
+    font-weight: 600;
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    width: 100%; /* Full width buttons */
+    margin-top: 20px; /* Space above buttons */
+}
+
+.auth-button:hover,
+form button[type="submit"]:hover {
+    background-color: #0056b3;
+    transform: translateY(-3px); /* More pronounced lift */
+    box-shadow: 0 6px 15px rgba(0,123,255,0.3);
+}
+
+.logout-button {
+    background-color: #dc3545;
+    margin-left: 15px; /* Keep margin left for layout next to status */
+    width: auto; /* Override 100% width for logout button in status area */
+    padding: 8px 15px; /* Smaller padding for logout button */
+    font-size: 0.9em;
+}
+
+.logout-button:hover {
+    background-color: #c82333;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(220,53,69,0.2);
+}
+
+/* --- End Login Page/Authentication Section Styles --- */
+
+
+/* Toggle Form Button (kept consistent with previous enhancements) */
+#toggleFormButton {
+    display: block;
+    width: 100%;
+    padding: 12px 15px;
+    margin-bottom: 30px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1.15em;
     font-weight: 600;
     transition: background-color 0.3s ease, transform 0.2s ease;
-    box-shadow: 0 2px 5px rgba(0,123,255,0.2); /* Subtle shadow */
+    box-shadow: 0 2px 5px rgba(0,123,255,0.2);
 }
 
 #toggleFormButton:hover {
@@ -180,8 +264,8 @@ h2 {
 }
 
 
-/* Form Section */
-.form-container { /* Changed from .form-section to match your HTML more accurately */
+/* Form Section (for adding talent) */
+.form-container {
     background-color: #f7f9fc;
     padding: 25px;
     border-radius: 10px;
@@ -194,61 +278,11 @@ h2 {
     color: #333;
 }
 
-/* Individual form group styling for better spacing */
-#talentForm label {
-    display: block;
-    margin-bottom: 8px; /* More space below label */
-    font-weight: 600;
-    color: #555;
-    font-size: 0.95em;
-}
-
-#talentForm input[type="text"],
-#talentForm input[type="email"],
-#talentForm input[type="number"],
-#talentForm input[type="password"],
-#talentForm select {
-    width: 100%; /* Full width */
-    padding: 12px; /* More padding */
-    border: 1px solid #dcdcdc; /* Lighter border */
-    border-radius: 6px;
-    box-sizing: border-box;
-    font-size: 1em;
-    margin-bottom: 15px; /* Space between inputs */
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
-}
-
-#talentForm input:focus,
-#talentForm select:focus {
-    border-color: #007bff;
-    box-shadow: 0 0 0 3px rgba(0,123,255,0.25); /* Focus glow */
-    outline: none;
-}
-
-#talentForm button[type="submit"] {
-    display: block;
-    width: 100%;
-    padding: 12px 15px;
-    background-color: #007bff; /* Use primary blue for submit */
-    color: white;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 1.15em;
-    font-weight: 600;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-    margin-top: 20px; /* More space above button */
-}
-
-#talentForm button[type="submit"]:hover {
-    background-color: #0056b3;
-    transform: translateY(-2px);
-}
 
 /* Feedback Messages */
 .feedback-message {
     padding: 12px;
-    margin-top: 20px; /* More space */
+    margin-top: 20px;
     border-radius: 6px;
     text-align: center;
     font-weight: 500;
@@ -274,16 +308,16 @@ h2 {
 
 /* Input-specific error messages */
 .input-error {
-    color: #dc3545; /* Red for errors */
+    color: #dc3545;
     font-size: 0.8em;
-    margin-top: -10px; /* Pull it closer to the input */
-    margin-bottom: 10px; /* Space below error */
-    display: block; /* Make it a block element to take its own line */
+    margin-top: -10px;
+    margin-bottom: 10px;
+    display: block;
 }
 
 
 /* Filters Section */
-.filters { /* Already correctly targets the element */
+.filters {
     background-color: #f7f9fc;
     padding: 25px;
     border-radius: 10px;
@@ -291,23 +325,23 @@ h2 {
     box-shadow: inset 0 1px 4px rgba(0,0,0,0.05);
     display: flex;
     flex-wrap: wrap;
-    gap: 20px; /* Increased gap */
-    justify-content: space-around; /* Distribute items evenly */
+    gap: 20px;
+    justify-content: space-around;
     align-items: flex-end;
 }
 
 .filters h2 {
-    width: 100%; /* Make heading take full width */
+    width: 100%;
     margin-bottom: 20px;
-    text-align: left; /* Align filter heading left */
+    text-align: left;
     color: #333;
     font-size: 1.6em;
 }
 
 .filter-group {
     flex: 1;
-    min-width: 200px; /* Slightly wider min-width */
-    max-width: 280px; /* Max width for individual filters */
+    min-width: 200px;
+    max-width: 280px;
 }
 
 .filter-group label {
@@ -338,11 +372,11 @@ h2 {
 
 
 /* Export Button Style */
-#exportCsvBtn { /* Specific ID for export button */
-    display: block; /* Ensure it's a block element */
-    width: auto; /* Auto width based on content */
+#exportCsvBtn {
+    display: block;
+    width: auto;
     padding: 10px 20px;
-    background-color: #6c757d; /* Muted grey */
+    background-color: #6c757d;
     color: white;
     border: none;
     border-radius: 6px;
@@ -350,7 +384,7 @@ h2 {
     font-size: 1em;
     font-weight: 500;
     transition: background-color 0.3s ease, transform 0.2s ease;
-    margin: 20px auto 0 auto; /* Center the button, add top margin */
+    margin: 20px auto 0 auto;
 }
 
 #exportCsvBtn:hover {
@@ -360,28 +394,28 @@ h2 {
 
 
 /* Table Styles */
-.talent-list { /* Updated to match your HTML */
+.talent-list {
     margin-top: 30px;
-    background-color: #f7f9fc; /* Light background for list section */
+    background-color: #f7f9fc;
     padding: 25px;
     border-radius: 10px;
     box-shadow: inset 0 1px 4px rgba(0,0,0,0.05);
-    overflow-x: auto; /* Enable horizontal scrolling for tables on small screens */
+    overflow-x: auto;
 }
 
 #talentTable {
     width: 100%;
-    border-collapse: separate; /* Use separate for rounded corners on cells */
-    border-spacing: 0; /* Remove space between cells */
+    border-collapse: separate;
+    border-spacing: 0;
     margin-top: 20px;
-    border-radius: 8px; /* Apply border-radius to the table itself */
-    overflow: hidden; /* Hide overflowing content if rounded corners clip */
+    border-radius: 8px;
+    overflow: hidden;
     box-shadow: 0 2px 10px rgba(0,0,0,0.05);
 }
 
 #talentTable th, #talentTable td {
-    border: none; /* Remove individual cell borders */
-    padding: 12px 15px; /* More padding */
+    border: none;
+    padding: 12px 15px;
     text-align: left;
     vertical-align: middle;
 }
@@ -392,7 +426,7 @@ h2 {
     cursor: pointer;
     position: relative;
     font-weight: 600;
-    text-transform: uppercase; /* Uppercase table headers */
+    text-transform: uppercase;
     font-size: 0.9em;
 }
 
@@ -404,42 +438,42 @@ h2 {
 
 
 #talentTable tbody tr:nth-child(even) {
-    background-color: #fcfdff; /* Very light alternative row */
+    background-color: #fcfdff;
 }
 
 #talentTable tbody tr:hover {
-    background-color: #e6f7ff; /* Light blue on hover */
-    transform: scale(1.005); /* Subtle grow effect */
+    background-color: #e6f7ff;
+    transform: scale(1.005);
     transition: background-color 0.2s ease, transform 0.2s ease;
 }
 
 /* Action Buttons */
 .actions {
-    display: flex; /* Arrange buttons in a row */
-    gap: 8px; /* Space between buttons */
-    justify-content: flex-start; /* Align to the start */
-    flex-wrap: wrap; /* Allow buttons to wrap if space is limited */
+    display: flex;
+    gap: 8px;
+    justify-content: flex-start;
+    flex-wrap: wrap;
 }
 
 .actions button {
-    padding: 8px 12px; /* Adjusted padding */
+    padding: 8px 12px;
     border: none;
-    border-radius: 5px; /* Slightly more rounded */
+    border-radius: 5px;
     cursor: pointer;
-    font-size: 0.85em; /* Slightly smaller font for compactness */
+    font-size: 0.85em;
     font-weight: 500;
     transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
-    flex-shrink: 0; /* Prevent buttons from shrinking */
+    flex-shrink: 0;
 }
 
 .actions button:hover {
-    opacity: 1; /* Ensure full opacity */
-    transform: translateY(-1px); /* Subtle lift */
+    opacity: 1;
+    transform: translateY(-1px);
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 
 .actions button.view-btn {
-    background-color: #17a2b8; /* Info color */
+    background-color: #17a2b8;
     color: white;
 }
 
@@ -448,7 +482,7 @@ h2 {
 }
 
 .actions button.edit-btn {
-    background-color: #007bff; /* Primary blue */
+    background-color: #007bff;
     color: white;
 }
 .actions button.edit-btn:hover {
@@ -457,7 +491,7 @@ h2 {
 
 
 .actions button.delete-btn {
-    background-color: #dc3545; /* Red */
+    background-color: #dc3545;
     color: white;
 }
 .actions button.delete-btn:hover {
@@ -466,13 +500,13 @@ h2 {
 
 
 /* Pagination Controls */
-.pagination { /* Updated to match your HTML */
+.pagination {
     margin-top: 30px;
     text-align: center;
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 20px; /* Increased gap */
+    gap: 20px;
     padding: 15px;
     background-color: #f7f9fc;
     border-radius: 10px;
@@ -513,44 +547,44 @@ h2 {
 .modal {
     display: none;
     position: fixed;
-    z-index: 1050; /* Higher z-index for modal */
+    z-index: 1050;
     left: 0;
     top: 0;
     width: 100%;
     height: 100%;
     overflow: auto;
-    background-color: rgba(0,0,0,0.5); /* Darker overlay */
+    background-color: rgba(0,0,0,0.5);
     padding-top: 50px;
-    animation: fadeIn 0.3s ease-out; /* Fade in animation */
+    animation: fadeIn 0.3s ease-out;
 }
 
 .modal-content {
     background-color: #ffffff;
     margin: 5% auto;
-    padding: 30px; /* More padding */
-    border: none; /* No border */
+    padding: 30px;
+    border: none;
     width: 90%;
-    max-width: 650px; /* Slightly larger max width */
+    max-width: 650px;
     border-radius: 12px;
-    box-shadow: 0 8px 30px rgba(0,0,0,0.25); /* Stronger shadow */
+    box-shadow: 0 8px 30px rgba(0,0,0,0.25);
     position: relative;
-    animation: slideIn 0.3s ease-out; /* Slide in animation */
+    animation: slideIn 0.3s ease-out;
 }
 
 .modal-content h2 {
     color: #0056b3;
     text-align: center;
     margin-bottom: 25px;
-    border-bottom: 1px solid #e0e0e0; /* Lighter border */
-    padding-bottom: 15px; /* More padding */
+    border-bottom: 1px solid #e0e0e0;
+    padding-bottom: 15px;
     font-size: 1.8em;
 }
 
 .detail-item {
-    margin-bottom: 12px; /* More space between items */
+    margin-bottom: 12px;
     padding: 8px 0;
-    border-bottom: 1px dotted #eeeeee; /* Lighter dotted border */
-    display: flex; /* Use flexbox for detail items */
+    border-bottom: 1px dotted #eeeeee;
+    display: flex;
     align-items: center;
 }
 
@@ -559,13 +593,13 @@ h2 {
 }
 
 .detail-item strong {
-    flex-basis: 180px; /* Fixed width for labels */
+    flex-basis: 180px;
     color: #555;
     font-weight: 600;
-    margin-right: 15px; /* Space between label and value */
+    margin-right: 15px;
 }
 .detail-item span {
-    flex-grow: 1; /* Allow value to take remaining space */
+    flex-grow: 1;
     color: #333;
 }
 
@@ -575,8 +609,8 @@ h2 {
     position: absolute;
     top: 15px;
     right: 20px;
-    font-size: 32px; /* Larger close button */
-    font-weight: normal; /* Normal font weight */
+    font-size: 32px;
+    font-weight: normal;
     cursor: pointer;
     transition: color 0.2s ease, transform 0.2s ease;
 }
@@ -584,7 +618,7 @@ h2 {
 .close-button:hover,
 .close-button:focus {
     color: #333;
-    transform: rotate(90deg); /* Spin on hover */
+    transform: rotate(90deg);
     text-decoration: none;
 }
 
@@ -603,12 +637,12 @@ h2 {
 /* Responsive adjustments */
 @media (max-width: 768px) {
     body {
-        padding: 15px; /* Reduce body padding on small screens */
+        padding: 15px;
     }
     #appContent {
         margin: 20px auto;
         padding: 20px;
-        border-radius: 8px; /* Smaller border-radius on small screens */
+        border-radius: 8px;
     }
     h1 {
         font-size: 2em;
@@ -625,24 +659,31 @@ h2 {
         min-width: unset;
         width: 100%;
     }
-    #talentForm input,
-    #talentForm select {
+    .form-group input,
+    .form-group select {
         padding: 10px;
     }
-    .form-container, .filters {
+    .form-container, .filters, .auth-section { /* Apply consistent padding/radius */
         padding: 20px;
         border-radius: 8px;
+    }
+    .auth-section { /* Adjust max-width for smaller screens */
+        max-width: 95%;
+        padding: 25px;
+    }
+    .auth-section h2 {
+        font-size: 1.8em;
     }
     #talentTable th, #talentTable td {
         padding: 10px;
         font-size: 0.9em;
     }
     .actions {
-        flex-direction: column; /* Stack buttons vertically on small screens */
+        flex-direction: column;
         gap: 5px;
     }
     .actions button {
-        width: 100%; /* Full width for action buttons */
+        width: 100%;
         padding: 10px;
         font-size: 0.9em;
     }
@@ -661,12 +702,12 @@ h2 {
         border-radius: 8px;
     }
     .detail-item {
-        flex-direction: column; /* Stack details vertically */
+        flex-direction: column;
         align-items: flex-start;
     }
     .detail-item strong {
         width: 100%;
         margin-right: 0;
-        margin-bottom: 5px; /* Space below label when stacked */
+        margin-bottom: 5px;
     }
 }
