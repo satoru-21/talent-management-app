@@ -84,42 +84,42 @@ h2 {
 }
 
 /* --- Login Page/Authentication Section Styles (Enhanced) --- */
-.auth-container { /* NEW: A wrapper for the entire auth area, can be centered easily */
+.auth-container {
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: calc(100vh - 80px); /* Adjust to fill most of the screen */
+    min-height: calc(100vh - 80px);
     padding: 20px;
     box-sizing: border-box;
 }
 
 .auth-section {
-    background-color: #ffffff; /* White background to make it stand out */
-    padding: 40px; /* More padding */
-    border-radius: 12px; /* Consistent rounded corners */
-    box-shadow: 0 8px 25px rgba(0,0,0,0.15); /* Prominent shadow */
-    margin: auto; /* Center it */
-    max-width: 450px; /* Max width for a clean login form */
-    width: 100%; /* Ensure it takes full width up to max-width */
+    background-color: #ffffff;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    margin: auto;
+    max-width: 450px;
+    width: 100%;
     text-align: center;
-    border: 1px solid #e0e0e0; /* Subtle border */
-    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth hover effect */
+    border: 1px solid #e0e0e0;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .auth-section:hover {
-    transform: translateY(-5px); /* Slight lift on hover */
+    transform: translateY(-5px);
     box-shadow: 0 12px 35px rgba(0,0,0,0.2);
 }
 
 .auth-section h2 {
     color: #0056b3;
-    font-size: 2em; /* Larger login heading */
+    font-size: 2em;
     margin-bottom: 30px;
     position: relative;
     padding-bottom: 15px;
 }
 
-.auth-section h2::after { /* Underline effect for the heading */
+.auth-section h2::after {
     content: '';
     position: absolute;
     bottom: 0;
@@ -134,7 +134,7 @@ h2 {
 .user-status-area {
     font-size: 1.1em;
     font-weight: bold;
-    margin-bottom: 25px; /* More space below status */
+    margin-bottom: 25px;
     color: #0056b3;
     display: flex;
     justify-content: center;
@@ -155,19 +155,20 @@ h2 {
 }
 
 .login-form-area {
-    margin-top: 30px; /* More space above the form */
+    margin-top: 30px;
     padding-top: 30px;
-    border-top: 1px solid #f0f0f0; /* Softer separation line */
+    border-top: 1px solid #f0f0f0;
 }
 
 /* Form Group for inputs */
 .form-group {
-    margin-bottom: 20px; /* More space between form fields */
-    text-align: left; /* Align labels/inputs left */
+    margin-bottom: 20px;
+    text-align: left;
+    display: block; /* Ensure each form group takes its own line */
 }
 
 .form-group label {
-    display: block;
+    display: block; /* Ensure label is on its own line above the input */
     margin-bottom: 8px;
     font-weight: 600;
     color: #555;
@@ -179,7 +180,7 @@ h2 {
 .form-group input[type="password"],
 .form-group input[type="number"],
 .form-group select {
-    width: 100%;
+    width: 100%; /* Ensure inputs take full width */
     padding: 12px;
     border: 1px solid #dcdcdc;
     border-radius: 6px;
@@ -197,32 +198,32 @@ h2 {
 
 /* Buttons */
 .auth-button,
-form button[type="submit"] { /* Combined for consistent styling */
+form button[type="submit"] {
     padding: 12px 25px;
     background-color: #007bff;
     color: white;
     border: none;
-    border-radius: 8px; /* More rounded */
+    border-radius: 8px;
     cursor: pointer;
-    font-size: 1.1em; /* Slightly larger font */
+    font-size: 1.1em;
     font-weight: 600;
     transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
-    width: 100%; /* Full width buttons */
-    margin-top: 20px; /* Space above buttons */
+    width: 100%;
+    margin-top: 20px;
 }
 
 .auth-button:hover,
 form button[type="submit"]:hover {
     background-color: #0056b3;
-    transform: translateY(-3px); /* More pronounced lift */
+    transform: translateY(-3px);
     box-shadow: 0 6px 15px rgba(0,123,255,0.3);
 }
 
 .logout-button {
     background-color: #dc3545;
-    margin-left: 15px; /* Keep margin left for layout next to status */
-    width: auto; /* Override 100% width for logout button in status area */
-    padding: 8px 15px; /* Smaller padding for logout button */
+    margin-left: 15px;
+    width: auto;
+    padding: 8px 15px;
     font-size: 0.9em;
 }
 
@@ -663,11 +664,11 @@ form button[type="submit"]:hover {
     .form-group select {
         padding: 10px;
     }
-    .form-container, .filters, .auth-section { /* Apply consistent padding/radius */
+    .form-container, .filters, .auth-section {
         padding: 20px;
         border-radius: 8px;
     }
-    .auth-section { /* Adjust max-width for smaller screens */
+    .auth-section {
         max-width: 95%;
         padding: 25px;
     }
