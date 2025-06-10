@@ -3,7 +3,7 @@
 // --- DOM elements ---
 // Elements that appear only on index.html or are primary to index.html functionality
 const toggleFormButton = document.getElementById('toggleFormButton');
-const talentFormSection = document.getElementById('talentFormSection');
+const talentFormSection = document.getElementById('talentFormSection'); // This is our target for scrolling
 const talentTableBody = document.querySelector('#talentTable tbody');
 const talentForm = document.getElementById('talentForm');
 const nameInput = document.getElementById('name');
@@ -505,6 +505,12 @@ async function editTalent(id) {
             if (talentFormSection) talentFormSection.style.display = 'block';
             if (toggleFormButton) toggleFormButton.textContent = 'Hide Add Talent Form';
             showFeedback('', 'success', formFeedback); // Clear any previous feedback
+
+            // --- NEW: Scroll to form after displaying it for editing ---
+            if (talentFormSection) {
+                talentFormSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+
         } else {
             showFeedback('Error: Talent data not retrieved for editing.', 'error', formFeedback);
         }
@@ -711,6 +717,8 @@ document.addEventListener('DOMContentLoaded', async () => {
                     } else {
                         talentFormSection.style.display = 'block';
                         toggleFormButton.textContent = 'Hide Add Talent Form';
+                        // --- NEW: Scroll to form when showing it via the toggle button ---
+                        talentFormSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
                     }
                 }
             });
@@ -745,6 +753,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 fetchTalents();
             });
         }
+        // --- NEW: Event listeners for Pagination & Sorting (moved from previous truncated section) ---
         if (prevPageBtn) {
             prevPageBtn.addEventListener('click', () => {
                 if (currentPage > 1) {
