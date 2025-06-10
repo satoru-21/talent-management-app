@@ -2,15 +2,33 @@
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
-    padding: 0;
+    padding: 0; /* Initial padding of body */
     background-color: #eef2f7;
     color: #333;
     line-height: 1.6;
     display: flex;
-    justify-content: center;
-    align-items: flex-start;
+    flex-direction: column; /* NEW: Stack children (header, main) vertically */
+    justify-content: center; /* Centers items vertically in a column layout */
+    align-items: center; /* Centers items horizontally in a column layout */
     min-height: 100vh;
+    box-sizing: border-box; /* Ensures padding doesn't add to total width/height */
+    padding: 20px; /* Add some general padding around the entire page content */
 }
+
+/* Adjust header h1 for spacing */
+header h1 {
+    /* Existing styles for h1 */
+    color: #0056b3;
+    text-align: center;
+    margin-bottom: 25px; /* Keep existing margin bottom */
+    font-weight: 600;
+    font-size: 2.5em;
+    
+    /* NEW: Add more spacing below the main title */
+    margin-bottom: 40px; 
+    margin-top: 0; /* Ensure no unwanted top margin pushes content down */
+}
+
 
 /* Loading Overlay Styles */
 #loadingOverlay {
@@ -48,14 +66,14 @@ body {
     100% { transform: rotate(360deg); }
 }
 
-/* Application Content Styles */
+/* Application Content Styles (likely not active on login.html) */
 #appContent {
-    display: none;
+    display: none; /* Keep this if appContent is only for logged-in state */
     opacity: 0;
     transition: opacity 0.5s ease-in-out;
     width: 100%;
     max-width: 1200px;
-    margin: 40px auto;
+    /* margin: 40px auto; removed as body now centers main */
     background: #ffffff;
     padding: 30px;
     border-radius: 12px;
@@ -69,28 +87,25 @@ body {
 }
 
 h1, h2 {
+    /* These styles apply broadly, see specific header h1 rule above */
     color: #0056b3;
     text-align: center;
     margin-bottom: 25px;
     font-weight: 600;
 }
 
-h1 {
-    font-size: 2.5em;
-}
-
-h2 {
-    font-size: 1.8em;
-}
 
 /* --- Login Page/Authentication Section Styles (Enhanced) --- */
 .auth-container {
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: calc(100vh - 80px);
-    padding: 20px;
+    flex-grow: 1; /* NEW: Allows this container to take up available vertical space */
+    min-height: auto; /* NEW: Reset this as body handles overall height */
+    padding: 0; /* NEW: Remove padding here, let body handle it or add specifically to auth-section */
     box-sizing: border-box;
+    width: 100%; /* Ensure it takes full width up to max-width */
+    max-width: 1200px; /* Maintain max width, will be centered horizontally by body */
 }
 
 .auth-section {
@@ -98,8 +113,8 @@ h2 {
     padding: 40px;
     border-radius: 12px;
     box-shadow: 0 8px 25px rgba(0,0,0,0.15);
-    margin: auto;
-    max-width: 450px;
+    margin: auto; /* Ensures the card itself is centered within auth-container */
+    max-width: 450px; /* Keep the max width for the card */
     width: 100%;
     text-align: center;
     border: 1px solid #e0e0e0;
@@ -162,14 +177,14 @@ h2 {
 
 /* General Form Group - This is the key for consistent form layout */
 .form-group {
-    margin-bottom: 20px; /* Space between form fields */
-    text-align: left; /* Align label and input to the left within the group */
-    display: block; /* Ensure each form group takes its own line for stacking */
+    margin-bottom: 20px;
+    text-align: left;
+    display: block;
 }
 
 .form-group label {
-    display: block; /* Ensure label is on its own line above the input */
-    margin-bottom: 8px; /* Space below label */
+    display: block;
+    margin-bottom: 8px;
     font-weight: 600;
     color: #555;
     font-size: 0.95em;
@@ -180,13 +195,12 @@ h2 {
 .form-group input[type="password"],
 .form-group input[type="number"],
 .form-group select {
-    width: 100%; /* Make input fill the available width */
+    width: 100%;
     padding: 12px;
     border: 1px solid #dcdcdc;
     border-radius: 6px;
-    box-sizing: border-box; /* Crucial: includes padding and border in the element's total width */
+    box-sizing: border-box;
     font-size: 1em;
-    /* margin-bottom is handled by .form-group for consistency */
     transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
@@ -196,8 +210,6 @@ h2 {
     box-shadow: 0 0 0 3px rgba(0,123,255,0.25);
     outline: none;
 }
-
-/* Removed specific .login-form-area label/input rules, relying on .form-group for consistency */
 
 
 /* Buttons */
