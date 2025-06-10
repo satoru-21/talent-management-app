@@ -1,3 +1,4 @@
+/* General Body Styles */
 body {
     font-family: Arial, sans-serif;
     margin: 0;
@@ -7,14 +8,72 @@ body {
     line-height: 1.6;
 }
 
-.container {
-    max-width: 1200px;
+/* Loading Overlay Styles */
+#loadingOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: white; /* Ensure this matches your desired loading screen background */
+    display: flex;
+    flex-direction: column; /* To stack spinner and text vertically */
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; /* Ensure it's on top of all other content */
+    font-size: 1.5em;
+    color: #555;
+    text-align: center;
+    transition: opacity 0.5s ease-in-out; /* Smooth transition for hiding */
+}
+
+/* Spinner for Loading Overlay */
+.spinner {
+    border: 8px solid #f3f3f3; /* Light grey */
+    border-top: 8px solid #3498db; /* Blue */
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 1s linear infinite;
+    margin-bottom: 10px; /* Space between spinner and text */
+}
+
+/* Spinner Animation */
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Application Content Styles */
+#appContent {
+    /* Initially hidden via JS and/or inline style, fade in when ready */
+    display: none; /* Will be set to 'block' or 'flex' by JS */
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out; /* Smooth fade-in effect */
+    max-width: 1200px; /* Keep container styles here if you want it to wrap the whole app */
     margin: 20px auto;
     background: #fff;
     padding: 30px;
     border-radius: 8px;
     box-shadow: 0 2px 10px rgba(0,0,0,0.1);
 }
+
+/* Class to show content after loading */
+#appContent.show-content {
+    display: block; /* Or 'flex' if your main layout is flexbox */
+    opacity: 1;
+}
+
+/* Existing styles for the container are now applied to #appContent */
+/* .container {
+    max-width: 1200px;
+    margin: 20px auto;
+    background: #fff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+} */
+
 
 h1, h2 {
     color: #0056b3;

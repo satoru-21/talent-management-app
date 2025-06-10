@@ -11,8 +11,8 @@ const emailInput = document.getElementById('email');
 const primarySkillInput = document.getElementById('primarySkill');
 const specificSkillsInput = document.getElementById('specificSkills');
 const yearsExperienceInput = document.getElementById('yearsExperience');
-const submitButton = talentForm ? talentForm.querySelector('button[type="submit"]') : null; // Check if talentForm exists
-const formFeedback = document.getElementById('formFeedback');
+const submitButton = talentForm ? talentForm.querySelector('button[type="submit"]') : null;
+const formFeedback = document.getElementById('formFeedback'); // Feedback for talent form actions
 const primarySkillFilter = document.getElementById('primarySkillFilter');
 const minExperienceFilter = document.getElementById('minExperienceFilter');
 const maxExperienceFilter = document.getElementById('maxExperienceFilter');
@@ -29,26 +29,30 @@ const exportCsvBtn = document.getElementById('exportCsvBtn');
 
 // Talent Details Modal DOM elements (primarily on index.html)
 const talentDetailsModal = document.getElementById('talentDetailsModal');
-const closeButton = talentDetailsModal ? talentDetailsModal.querySelector('.close-button') : null; // Check if modal exists
+const closeButton = talentDetailsModal ? talentDetailsModal.querySelector('.close-button') : null;
 const detailId = document.getElementById('detailId');
 const detailName = document.getElementById('detailName');
 const detailEmail = document.getElementById('detailEmail');
 const detailPrimarySkill = document.getElementById('detailPrimarySkill');
 const detailSpecificSkills = document.getElementById('detailSpecificSkills');
-const detailYearsExperience = document.getElementById('detailYearsExperience'); // Corrected from yearsExperience
+const detailYearsExperience = document.getElementById('detailYearsExperience');
 
 // Elements that appear only on login.html or are primary to login.html functionality
-const loginFormArea = document.getElementById('loginFormArea');
+const loginFormArea = document.getElementById('loginFormArea'); // The container for the login form
 const loginForm = document.getElementById('loginForm');
-const usernameInput = document.getElementById('username'); // These will be null on index.html
-const passwordInput = document.getElementById('password'); // These will be null on index.html
-const authFeedback = document.getElementById('authFeedback'); // This will be null on index.html
+const usernameInput = document.getElementById('username');
+const passwordInput = document.getElementById('password');
+const authFeedback = document.getElementById('authFeedback'); // Feedback for login/auth actions
 
 // Elements that appear on index.html for auth status
 const loggedInStatus = document.getElementById('loggedInStatus');
 const currentUserSpan = document.getElementById('currentUser');
 const currentUserRoleSpan = document.getElementById('currentUserRole');
 const logoutButton = document.getElementById('logoutButton');
+
+// NEW: Elements for content visibility and loading overlay
+const appContent = document.getElementById('appContent'); // The main content container on index.html
+const loadingOverlay = document.getElementById('loadingOverlay'); // The loading overlay div
 
 
 // Frontend state variables
@@ -75,11 +79,12 @@ const AUTH_API_BASE_URL = 'https://talent-management-app-9e8m.onrender.com/api';
 
 // Function to display general feedback messages to the user (can be for form or auth)
 function showFeedback(message, type = 'success', targetElement) {
-    // Determine target element based on current page
-    let actualTarget = formFeedback; // Default for talent form page
+    // Determine target element based on current page or provided targetElement
+    let actualTarget = formFeedback; // Default for index.html talent form feedback
+
     if (window.location.pathname.includes('login.html') && authFeedback) {
-        actualTarget = authFeedback; // For login page
-    } else if (targetElement) { // If a specific target was passed
+        actualTarget = authFeedback; // For login page's auth feedback
+    } else if (targetElement) { // If a specific target was explicitly passed
         actualTarget = targetElement;
     }
 
@@ -127,8 +132,8 @@ function clearFormAndErrors() {
         }
     }
     clearInputErrors();
-    // Only clear form feedback if it exists
-    if (formFeedback) {
+    // Only clear form feedback if it exists and is not the authFeedback
+    if (formFeedback && formFeedback.id === 'formFeedback') { // Ensure it's specifically formFeedback
         formFeedback.textContent = '';
         formFeedback.className = 'feedback-message';
         formFeedback.style.opacity = 0;
@@ -136,11 +141,14 @@ function clearFormAndErrors() {
 }
 
 // Function to update UI based on authentication status and role
-function updateUIForAuth(authenticated, role = 'guest', username = 'Guest') {
+async function updateUIForAuth(authenticated, role = 'guest', username = 'Guest') {
     isAuthenticated = authenticated;
     currentUserRole = role;
 
-    const currentPath = window.location.pathname; // Get the current page URL
+    const currentPath = window.location.pathname;
+
+    // This is crucial: Hide the loading overlay once authentication check is done.
+    if (loadingOverlay) loadingOverlay.style.display = 'none';
 
     // --- Logic for when the user IS authenticated ---
     if (isAuthenticated) {
@@ -150,6 +158,12 @@ function updateUIForAuth(authenticated, role = 'guest', username = 'Guest') {
             return; // Exit function as we are redirecting
         } else {
             // If logged in and on the main (index.html) page
+            // Show the main content area by adding the class
+            if (appContent) {
+                appContent.classList.add('show-content'); // Uses CSS class for display and transition
+                appContent.style.display = 'block'; // Ensure it's block for the CSS transition to work
+            }
+
             if (loggedInStatus) loggedInStatus.style.display = 'block';
             if (currentUserSpan) currentUserSpan.textContent = username;
             if (currentUserRoleSpan) currentUserRoleSpan.textContent = role;
@@ -164,6 +178,9 @@ function updateUIForAuth(authenticated, role = 'guest', username = 'Guest') {
                 if (talentFormSection) talentFormSection.style.display = 'none'; // Ensure add form is hidden for non-admins
                 if (exportCsvBtn) exportCsvBtn.style.display = 'none';
             }
+            // Fetch talents and populate filters if on index.html and authenticated
+            await fetchTalents();
+            await populateSkillFilter();
         }
     }
     // --- Logic for when the user is NOT authenticated ---
@@ -174,20 +191,20 @@ function updateUIForAuth(authenticated, role = 'guest', username = 'Guest') {
             return; // Exit function as we are redirecting
         } else {
             // If not logged in and on the login page, ensure login form is visible
-            if (loginFormArea) loginFormArea.style.display = 'block';
-            // Ensure main page elements are hidden, just in case (e.g., if login.html included script.js from index.html)
+            if (loginFormArea) loginFormArea.style.display = 'block'; // Ensure the login form container is visible
+            // Hide main page elements by ensuring the appContent class is removed and display is none
+            if (appContent) {
+                appContent.classList.remove('show-content'); // Ensure it's hidden if somehow visible
+                appContent.style.display = 'none'; // Explicitly hide if it was somehow visible
+            }
+            // Ensure login-specific elements are visible if on login.html
+            // The ones below are primarily for index.html but we explicitly hide them for clarity
             if (loggedInStatus) loggedInStatus.style.display = 'none';
             if (logoutButton) logoutButton.style.display = 'none';
             if (toggleFormButton) toggleFormButton.style.display = 'none';
             if (talentFormSection) talentFormSection.style.display = 'none';
             if (exportCsvBtn) exportCsvBtn.style.display = 'none';
         }
-    }
-
-    // Re-render the table to show/hide action buttons based on role (only on index.html)
-    // This needs to happen AFTER redirects are handled.
-    if (!currentPath.includes('login.html')) {
-        fetchTalents();
     }
 }
 
@@ -252,8 +269,8 @@ function renderTalentsTable(talentsToRender) {
 
 // Function to fetch talents from the backend API (UPDATED for pagination & sorting)
 async function fetchTalents() {
-    // Only attempt to fetch talents if on index.html
-    if (!window.location.pathname.includes('login.html')) {
+    // Only attempt to fetch talents if on index.html AND authenticated
+    if (!window.location.pathname.includes('login.html') && isAuthenticated) {
         try {
             let url = new URL(API_BASE_URL);
 
@@ -282,7 +299,7 @@ async function fetchTalents() {
                 // If the fetch fails for talents (e.g., due to session expiry or backend restart)
                 // we should re-check login status which will then redirect if needed.
                 if (response.status === 401 || response.status === 403) {
-                     // Check login status again, which will handle the redirect
+                    // Check login status again, which will handle the redirect
                     await checkLoginStatus();
                     return; // Prevent further execution of this fetch
                 }
@@ -312,13 +329,16 @@ function updatePaginationControls(totalTalents, page, limit, totalPages) {
 
 // Function to populate the primary skill filter dropdown
 async function populateSkillFilter() {
-    if (!primarySkillFilter) return; // Only populate if on the page with the filter
+    // Only populate if on the page with the filter AND authenticated
+    if (!primarySkillFilter || !isAuthenticated) return;
 
     try {
+        // Fetch all talents (limit=0 means no pagination, get all for skills)
         const response = await fetch(`${API_BASE_URL}?limit=0`, { credentials: 'include' });
         if (!response.ok) {
             if (response.status === 401 || response.status === 403) {
                 console.warn('Could not populate skill filter due to authentication. This is expected if viewing is restricted.');
+                // No redirect here, checkLoginStatus will handle it if necessary from fetchTalents
                 return;
             }
             throw new Error(`HTTP error! status: ${response.status}`);
@@ -337,6 +357,7 @@ async function populateSkillFilter() {
         });
     } catch (error) {
         console.error('Error populating skill filter:', error);
+        // showFeedback(`Error populating skill filter: ${error.message}`, 'error', formFeedback); // Optional: if you want feedback on filter populate errors
     }
 }
 
@@ -483,7 +504,7 @@ async function editTalent(id) {
             }
             if (talentFormSection) talentFormSection.style.display = 'block';
             if (toggleFormButton) toggleFormButton.textContent = 'Hide Add Talent Form';
-            showFeedback('', 'success', formFeedback);
+            showFeedback('', 'success', formFeedback); // Clear any previous feedback
         } else {
             showFeedback('Error: Talent data not retrieved for editing.', 'error', formFeedback);
         }
@@ -519,11 +540,12 @@ async function deleteTalent(id) {
             console.error('Delete API Error:', result);
         } else {
             showFeedback(`Talent with ID ${id} deleted successfully!`, 'success', formFeedback);
+            // Re-fetch talents to update the table, checking if the current page is now empty
             const responseAfterDelete = await fetch(`${API_BASE_URL}?page=${currentPage}&limit=${itemsPerPage}&sort_by=${currentSortColumn}&sort_direction=${sortDirection}`, { credentials: 'include' });
             const dataAfterDelete = await responseAfterDelete.json();
 
             if (dataAfterDelete.talents.length === 0 && dataAfterDelete.total_pages > 0 && currentPage > 1) {
-                currentPage--;
+                currentPage--; // Go to previous page if current page becomes empty
             }
             await fetchTalents();
             await populateSkillFilter();
@@ -580,7 +602,7 @@ function hideTalentDetails() {
 // Handle user login (ONLY on login.html)
 async function handleLogin(event) {
     event.preventDefault();
-    if (!usernameInput || !passwordInput || !authFeedback) return; // Ensure elements exist
+    if (!usernameInput || !passwordInput || !authFeedback) return; // Ensure elements exist specific to login.html
 
     const username = usernameInput.value.trim();
     const password = passwordInput.value.trim();
@@ -648,182 +670,168 @@ async function checkLoginStatus() {
         const result = await response.json();
 
         if (response.ok && result.is_authenticated) {
-            updateUIForAuth(true, result.role, result.username);
+            await updateUIForAuth(true, result.role, result.username);
         } else {
-            updateUIForAuth(false); // Not authenticated, updateUIForAuth will handle redirects
+            await updateUIForAuth(false); // Not authenticated, updateUIForAuth will handle redirects
         }
     } catch (error) {
         console.error('Failed to check login status:', error);
-        updateUIForAuth(false); // Assume not authenticated on error, updateUIForAuth will handle redirects
+        await updateUIForAuth(false); // Assume not authenticated on error, updateUIForAuth will handle redirects
     }
 }
 
 
-// --- Event Listeners for Filters and Search (ONLY on index.html) ---
-if (primarySkillFilter) {
-    primarySkillFilter.addEventListener('change', () => {
-        currentPage = 1;
-        fetchTalents();
-    });
-}
-if (minExperienceFilter) {
-    minExperienceFilter.addEventListener('input', () => {
-        currentPage = 1;
-        fetchTalents();
-    });
-}
-if (maxExperienceFilter) {
-    maxExperienceFilter.addEventListener('input', () => {
-        currentPage = 1;
-        fetchTalents();
-    });
-}
-if (searchInput) {
-    searchInput.addEventListener('input', () => {
-        currentPage = 1;
-        fetchTalents();
-    });
-}
-
-// --- Event Listeners for Pagination (ONLY on index.html) ---
-if (prevPageBtn) {
-    prevPageBtn.addEventListener('click', () => {
-        if (currentPage > 1) {
-            currentPage--;
-            fetchTalents();
-        }
-    });
-}
-if (nextPageBtn) {
-    nextPageBtn.addEventListener('click', () => {
-        currentPage++;
-        fetchTalents();
-    });
-}
-
-// --- Event Listeners for Sorting (ONLY on index.html) ---
-if (tableHeaders) {
-    tableHeaders.forEach(header => {
-        header.addEventListener('click', () => {
-            const column = header.dataset.sort;
-
-            if (currentSortColumn === column) {
-                sortDirection = (sortDirection === 'asc' ? 'desc' : 'asc');
-            } else {
-                currentSortColumn = column;
-                sortDirection = 'asc';
-            }
-
-            currentPage = 1;
-            fetchTalents();
-        });
-    });
-}
-
-// Event listener for Export CSV button (ONLY on index.html)
-if (exportCsvBtn) {
-    exportCsvBtn.addEventListener('click', async () => {
-        try {
-            let exportUrl = new URL(`${AUTH_API_BASE_URL}/talents/export`);
-
-            if (primarySkillFilter && primarySkillFilter.value && primarySkillFilter.value !== 'All Skills') {
-                exportUrl.searchParams.append('primarySkill', primarySkillFilter.value);
-            }
-            if (minExperienceFilter && minExperienceFilter.value) {
-                exportUrl.searchParams.append('minExperience', minExperienceFilter.value);
-            }
-            if (maxExperienceFilter && maxExperienceFilter.value) {
-                exportUrl.searchParams.append('maxExperience', maxExperienceFilter.value);
-            }
-            if (searchInput && searchInput.value) {
-                exportUrl.searchParams.append('search', searchInput.value.trim());
-            }
-
-            const response = await fetch(exportUrl, { credentials: 'include' });
-            if (response.status === 401 || response.status === 403) {
-                const authError = await response.json();
-                showFeedback(`Export failed: ${authError.error || response.statusText}. Please ensure you are logged in as an administrator.`, 'error', formFeedback);
-                updateUIForAuth(false);
-                return;
-            }
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-
-            const blob = await response.blob();
-            const downloadUrl = window.URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = downloadUrl;
-            a.download = 'talents_export.csv';
-            document.body.appendChild(a);
-            a.click();
-            window.URL.revokeObjectURL(downloadUrl);
-            document.body.removeChild(a);
-
-            showFeedback('CSV export started!', 'success', formFeedback);
-
-        } catch (error) {
-            console.error('Error exporting CSV:', error);
-            showFeedback(`Error exporting CSV: ${error.message}`, 'error', formFeedback);
-        }
-    });
-}
-
-
-// Event listeners for Modal close button and clicking outside the modal (ONLY on index.html)
-if (closeButton && talentDetailsModal) { // Check if elements exist
-    closeButton.addEventListener('click', hideTalentDetails);
-
-    window.addEventListener('click', (event) => {
-        if (event.target === talentDetailsModal) {
-            hideTalentDetails();
-        }
-    });
-}
-
-
-// Event listener for the talent form submission (ONLY on index.html)
-if (talentForm) {
-    talentForm.addEventListener('submit', handleFormSubmit);
-}
-
-// Event listener for toggle form button (ONLY on index.html)
-if (toggleFormButton) {
-    toggleFormButton.addEventListener('click', () => {
-        if (talentFormSection && talentFormSection.style.display === 'none') {
-            talentFormSection.style.display = 'block';
-            toggleFormButton.textContent = 'Hide Add Talent Form';
-        } else if (talentFormSection) {
-            talentFormSection.style.display = 'none';
-            toggleFormButton.textContent = 'Show Add Talent Form';
-            clearFormAndErrors(); // Clear form when hiding
-        }
-    });
-}
-
-
-// Event listener for Login (ONLY on login.html)
-if (loginForm) {
-    loginForm.addEventListener('submit', handleLogin);
-}
-// Event listener for Logout (ONLY on index.html)
-if (logoutButton) {
-    logoutButton.addEventListener('click', handleLogout);
-}
-
-
-// Initial data load when the DOM is fully loaded
+// --- Event Listeners and Initial Load ---
 document.addEventListener('DOMContentLoaded', async () => {
-    // 1. Check login status, this will handle redirects to login.html or update UI on index.html
-    await checkLoginStatus();
-
-    // 2. Based on updateUIForAuth's decision, if we are on index.html and authenticated,
-    // then fetch talents and populate filters.
-    // updateUIForAuth already calls fetchTalents if not on login.html and authenticated,
-    // so we just need to ensure populateSkillFilter runs.
+    // Determine the current page
     const currentPath = window.location.pathname;
-    if (!currentPath.includes('login.html') && isAuthenticated) {
-        // fetchTalents is called by updateUIForAuth, so only populate filter if not already
-        await populateSkillFilter();
+
+    // Attach event listeners conditional on the current page
+    if (currentPath.includes('login.html')) {
+        // Only attach login form listener if on login page
+        if (loginForm) {
+            loginForm.addEventListener('submit', handleLogin);
+        }
+        // Immediately hide loading overlay for login page as it's not needed after DOMContentLoaded
+        if (loadingOverlay) loadingOverlay.style.display = 'none';
+        // Ensure login form area is visible (if needed, though CSS should default to block)
+        if (loginFormArea) loginFormArea.style.display = 'block';
+    } else { // This is for index.html
+        // Show loading overlay immediately on index.html until checkLoginStatus is done
+        if (loadingOverlay) loadingOverlay.style.display = 'flex'; // Use flex to center content
+
+        // Add index.html specific event listeners only if elements exist
+        if (toggleFormButton) {
+            toggleFormButton.addEventListener('click', () => {
+                if (talentFormSection) {
+                    if (talentFormSection.style.display === 'block') {
+                        talentFormSection.style.display = 'none';
+                        toggleFormButton.textContent = 'Show Add Talent Form';
+                        clearFormAndErrors();
+                    } else {
+                        talentFormSection.style.display = 'block';
+                        toggleFormButton.textContent = 'Hide Add Talent Form';
+                    }
+                }
+            });
+        }
+        if (talentForm) {
+            talentForm.addEventListener('submit', handleFormSubmit);
+        }
+        if (logoutButton) {
+            logoutButton.addEventListener('click', handleLogout);
+        }
+        if (primarySkillFilter) {
+            primarySkillFilter.addEventListener('change', () => {
+                currentPage = 1;
+                fetchTalents();
+            });
+        }
+        if (minExperienceFilter) {
+            minExperienceFilter.addEventListener('input', () => {
+                currentPage = 1;
+                fetchTalents();
+            });
+        }
+        if (maxExperienceFilter) {
+            maxExperienceFilter.addEventListener('input', () => {
+                currentPage = 1;
+                fetchTalents();
+            });
+        }
+        if (searchInput) {
+            searchInput.addEventListener('input', () => {
+                currentPage = 1;
+                fetchTalents();
+            });
+        }
+        if (prevPageBtn) {
+            prevPageBtn.addEventListener('click', () => {
+                if (currentPage > 1) {
+                    currentPage--;
+                    fetchTalents();
+                }
+            });
+        }
+        if (nextPageBtn) {
+            nextPageBtn.addEventListener('click', () => {
+                currentPage++;
+                fetchTalents();
+            });
+        }
+        if (tableHeaders) {
+            tableHeaders.forEach(header => {
+                header.addEventListener('click', () => {
+                    const column = header.dataset.sort;
+                    if (currentSortColumn === column) {
+                        sortDirection = (sortDirection === 'asc' ? 'desc' : 'asc');
+                    } else {
+                        currentSortColumn = column;
+                        sortDirection = 'asc';
+                    }
+                    currentPage = 1;
+                    fetchTalents();
+                });
+            });
+        }
+        if (exportCsvBtn) {
+            exportCsvBtn.addEventListener('click', async () => {
+                try {
+                    let exportUrl = new URL(`${AUTH_API_BASE_URL}/talents/export`);
+
+                    if (primarySkillFilter && primarySkillFilter.value && primarySkillFilter.value !== 'All Skills') {
+                        exportUrl.searchParams.append('primarySkill', primarySkillFilter.value);
+                    }
+                    if (minExperienceFilter && minExperienceFilter.value) {
+                        exportUrl.searchParams.append('minExperience', minExperienceFilter.value);
+                    }
+                    if (maxExperienceFilter && maxExperienceFilter.value) {
+                        exportUrl.searchParams.append('maxExperience', maxExperienceFilter.value);
+                    }
+                    if (searchInput && searchInput.value) {
+                        exportUrl.searchParams.append('search', searchInput.value.trim());
+                    }
+
+                    const response = await fetch(exportUrl, { credentials: 'include' });
+                    if (response.status === 401 || response.status === 403) {
+                        const authError = await response.json();
+                        showFeedback(`Export failed: ${authError.error || response.statusText}. Please ensure you are logged in as an administrator.`, 'error', formFeedback);
+                        updateUIForAuth(false);
+                        return;
+                    }
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+
+                    const blob = await response.blob();
+                    const downloadUrl = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = downloadUrl;
+                    a.download = 'talents_export.csv';
+                    document.body.appendChild(a);
+                    a.click();
+                    window.URL.revokeObjectURL(downloadUrl);
+                    document.body.removeChild(a);
+
+                    showFeedback('CSV export started!', 'success', formFeedback);
+
+                } catch (error) {
+                    console.error('Error exporting CSV:', error);
+                    showFeedback(`Error exporting CSV: ${error.message}`, 'error', formFeedback);
+                }
+            });
+        }
+        if (closeButton && talentDetailsModal) {
+            closeButton.addEventListener('click', hideTalentDetails);
+            window.addEventListener('click', (event) => {
+                if (event.target === talentDetailsModal) {
+                    hideTalentDetails();
+                }
+            });
+        }
     }
+
+    // Always check login status on DOMContentLoaded for both pages
+    // This is the first thing that happens after the page structure is loaded
+    await checkLoginStatus();
 });

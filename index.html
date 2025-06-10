@@ -5,109 +5,159 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Talent Management System</title>
     <link rel="stylesheet" href="style.css">
+    <style>
+        /* This is a temporary measure for initial page load flash.
+           The actual display logic is controlled by JavaScript and style.css */
+        #appContent {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+        }
+        #appContent.show-content {
+            display: block; /* Or flex, depending on your layout */
+            opacity: 1;
+        }
+
+        #loadingOverlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: white; /* Match your app's background or desired loading screen color */
+            display: flex; /* Use flex to easily center content */
+            justify-content: center;
+            align-items: center;
+            z-index: 1000; /* Ensure it's on top of everything */
+            font-size: 1.5em; /* Adjust size as needed */
+            color: #555; /* Adjust color as needed */
+            text-align: center;
+        }
+
+        /* Basic spinner for loading (optional, but good for UX) */
+        .spinner {
+            border: 8px solid #f3f3f3; /* Light grey */
+            border-top: 8px solid #3498db; /* Blue */
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin-bottom: 10px; /* Space between spinner and text */
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
 </head>
 <body>
-    <header>
-        <h1>Talent Management System</h1>
-        <div id="loggedInStatus" style="display: none;">
-            Logged in as: <span id="currentUser"></span> (<span id="currentUserRole"></span>)
-            <button id="logoutButton">Logout</button>
-        </div>
-    </header>
-
-    <main>
-        <section class="filters">
-            <h2>Filters & Search</h2>
-            <div>
-                <label for="primarySkillFilter">Primary Skill:</label>
-                <select id="primarySkillFilter">
-                    <option value="">All Skills</option>
-                    </select>
-            </div>
-            <div>
-                <label for="minExperienceFilter">Min Experience:</label>
-                <input type="number" id="minExperienceFilter" placeholder="e.g., 2">
-            </div>
-            <div>
-                <label for="maxExperienceFilter">Max Experience:</label>
-                <input type="number" id="maxExperienceFilter" placeholder="e.g., 10">
-            </div>
-            <div>
-                <label for="searchInput">Search:</label>
-                <input type="text" id="searchInput" placeholder="Search by name, email, skill">
-            </div>
-        </section>
-
-        <button id="toggleFormButton" class="add-talent-button" style="display: none;">Show Add Talent Form</button>
-        <p id="formFeedback" class="feedback-message"></p>
-
-        <section id="talentFormSection" class="form-container" style="display: none;">
-            <h2>Add New Talent</h2>
-            <form id="talentForm">
-                <input type="hidden" id="talentId">
-                <label for="name">Name:</label>
-                <input type="text" id="name" name="name" required>
-                <span id="nameError" class="input-error"></span>
-
-                <label for="email">Email:</label>
-                <input type="email" id="email" name="email" required>
-                <span id="emailError" class="input-error"></span>
-
-                <label for="primarySkill">Primary Skill:</label>
-                <input type="text" id="primarySkill" name="primarySkill" required>
-                <span id="primarySkillError" class="input-error"></span>
-
-                <label for="specificSkills">Specific Skills (comma-separated):</label>
-                <input type="text" id="specificSkills" name="specificSkills">
-                <span id="specificSkillsError" class="input-error"></span>
-
-                <label for="yearsExperience">Years Experience:</label>
-                <input type="number" id="yearsExperience" name="yearsExperience" required min="0">
-                <span id="yearsExperienceError" class="input-error"></span>
-
-                <button type="submit">Add Talent</button>
-            </form>
-        </section>
-
-        <section class="talent-list">
-            <h2>Talent Roster</h2>
-            <button id="exportCsvBtn" style="display: none;">Export to CSV</button>
-            <table id="talentTable">
-                <thead>
-                    <tr>
-                        <th data-sort="name">Name</th>
-                        <th data-sort="email">Email</th>
-                        <th data-sort="primarySkill">Primary Skill</th>
-                        <th data-sort="specificSkills">Specific Skills</th>
-                        <th data-sort="yearsExperience">Years Experience</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    </tbody>
-            </table>
-        </section>
-
-        <div class="pagination">
-            <button id="prevPageBtn">Previous</button>
-            <span id="pageInfo"></span>
-            <button id="nextPageBtn">Next</button>
-        </div>
-    </main>
-
-    <div id="talentDetailsModal" class="modal">
-        <div class="modal-content">
-            <span class="close-button">&times;</span>
-            <h2>Talent Details</h2>
-            <p><strong>ID:</strong> <span id="detailId"></span></p>
-            <p><strong>Name:</strong> <span id="detailName"></span></p>
-            <p><strong>Email:</strong> <span id="detailEmail"></span></p>
-            <p><strong>Primary Skill:</strong> <span id="detailPrimarySkill"></span></p>
-            <p><strong>Specific Skills:</strong> <span id="detailSpecificSkills"></span></p>
-            <p><strong>Years Experience:</strong> <span id="detailYearsExperience"></span></p>
-        </div>
+    <div id="loadingOverlay">
+        <div class="spinner"></div>
+        <p>Loading application...</p>
     </div>
 
-    <script src="script.js"></script>
+    <div id="appContent">
+        <header>
+            <h1>Talent Management System</h1>
+            <div id="loggedInStatus" style="display: none;">
+                Logged in as: <span id="currentUser"></span> (<span id="currentUserRole"></span>)
+                <button id="logoutButton">Logout</button>
+            </div>
+        </header>
+
+        <main>
+            <section class="filters">
+                <h2>Filters & Search</h2>
+                <div>
+                    <label for="primarySkillFilter">Primary Skill:</label>
+                    <select id="primarySkillFilter">
+                        <option value="">All Skills</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="minExperienceFilter">Min Experience:</label>
+                    <input type="number" id="minExperienceFilter" placeholder="e.g., 2">
+                </div>
+                <div>
+                    <label for="maxExperienceFilter">Max Experience:</label>
+                    <input type="number" id="maxExperienceFilter" placeholder="e.g., 10">
+                </div>
+                <div>
+                    <label for="searchInput">Search:</label>
+                    <input type="text" id="searchInput" placeholder="Search by name, email, skill">
+                </div>
+            </section>
+
+            <button id="toggleFormButton" class="add-talent-button" style="display: none;">Show Add Talent Form</button>
+            <p id="formFeedback" class="feedback-message"></p>
+
+            <section id="talentFormSection" class="form-container" style="display: none;">
+                <h2>Add New Talent</h2>
+                <form id="talentForm">
+                    <input type="hidden" id="talentId">
+                    <label for="name">Name:</label>
+                    <input type="text" id="name" name="name" required>
+                    <span id="nameError" class="input-error"></span>
+
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" required>
+                    <span id="emailError" class="input-error"></span>
+
+                    <label for="primarySkill">Primary Skill:</label>
+                    <input type="text" id="primarySkill" name="primarySkill" required>
+                    <span id="primarySkillError" class="input-error"></span>
+
+                    <label for="specificSkills">Specific Skills (comma-separated):</label>
+                    <input type="text" id="specificSkills" name="specificSkills">
+                    <span id="specificSkillsError" class="input-error"></span>
+
+                    <label for="yearsExperience">Years Experience:</label>
+                    <input type="number" id="yearsExperience" name="yearsExperience" required min="0">
+                    <span id="yearsExperienceError" class="input-error"></span>
+
+                    <button type="submit">Add Talent</button>
+                </form>
+            </section>
+
+            <section class="talent-list">
+                <h2>Talent Roster</h2>
+                <button id="exportCsvBtn" style="display: none;">Export to CSV</button>
+                <table id="talentTable">
+                    <thead>
+                        <tr>
+                            <th data-sort="name">Name</th>
+                            <th data-sort="email">Email</th>
+                            <th data-sort="primarySkill">Primary Skill</th>
+                            <th data-sort="specificSkills">Specific Skills</th>
+                            <th data-sort="yearsExperience">Years Experience</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </section>
+
+            <div class="pagination">
+                <button id="prevPageBtn">Previous</button>
+                <span id="pageInfo"></span>
+                <button id="nextPageBtn">Next</button>
+            </div>
+        </main>
+
+        <div id="talentDetailsModal" class="modal">
+            <div class="modal-content">
+                <span class="close-button">&times;</span>
+                <h2>Talent Details</h2>
+                <p><strong>ID:</strong> <span id="detailId"></span></p>
+                <p><strong>Name:</strong> <span id="detailName"></span></p>
+                <p><strong>Email:</strong> <span id="detailEmail"></span></p>
+                <p><strong>Primary Skill:</strong> <span id="detailPrimarySkill"></span></p>
+                <p><strong>Specific Skills:</strong> <span id="detailSpecificSkills"></span></p>
+                <p><strong>Years Experience:</strong> <span id="detailYearsExperience"></span></p>
+            </div>
+        </div>
+    </div> <script src="script.js"></script>
 </body>
 </html>
