@@ -1,11 +1,15 @@
 /* General Body Styles */
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* A slightly more modern font */
     margin: 0;
-    padding: 20px;
-    background-color: #f4f4f4;
+    padding: 0; /* Remove padding from body, let #appContent handle it */
+    background-color: #eef2f7; /* Lighter, more modern background */
     color: #333;
     line-height: 1.6;
+    display: flex; /* Use flexbox to center content */
+    justify-content: center;
+    align-items: flex-start; /* Align to the top of the viewport */
+    min-height: 100vh; /* Ensure body takes full viewport height */
 }
 
 /* Loading Overlay Styles */
@@ -15,27 +19,27 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: white; /* Ensure this matches your desired loading screen background */
+    background-color: #ffffff; /* White background for loading */
     display: flex;
-    flex-direction: column; /* To stack spinner and text vertically */
+    flex-direction: column;
     justify-content: center;
     align-items: center;
-    z-index: 1000; /* Ensure it's on top of all other content */
+    z-index: 1000;
     font-size: 1.5em;
-    color: #555;
+    color: #007bff; /* Match primary color */
     text-align: center;
-    transition: opacity 0.5s ease-in-out; /* Smooth transition for hiding */
+    transition: opacity 0.5s ease-in-out;
 }
 
 /* Spinner for Loading Overlay */
 .spinner {
     border: 8px solid #f3f3f3; /* Light grey */
-    border-top: 8px solid #3498db; /* Blue */
+    border-top: 8px solid #007bff; /* Primary blue */
     border-radius: 50%;
-    width: 50px;
-    height: 50px;
+    width: 60px; /* Slightly larger spinner */
+    height: 60px;
     animation: spin 1s linear infinite;
-    margin-bottom: 10px; /* Space between spinner and text */
+    margin-bottom: 20px; /* More space */
 }
 
 /* Spinner Animation */
@@ -46,48 +50,46 @@ body {
 
 /* Application Content Styles */
 #appContent {
-    /* Initially hidden via JS and/or inline style, fade in when ready */
-    display: none; /* Will be set to 'block' or 'flex' by JS */
+    display: none;
     opacity: 0;
-    transition: opacity 0.5s ease-in-out; /* Smooth fade-in effect */
-    max-width: 1200px; /* Keep container styles here if you want it to wrap the whole app */
-    margin: 20px auto;
-    background: #fff;
+    transition: opacity 0.5s ease-in-out;
+    width: 100%; /* Take full width of parent (body) */
+    max-width: 1200px; /* Maximum width for the entire app */
+    margin: 40px auto; /* More vertical margin */
+    background: #ffffff;
     padding: 30px;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    border-radius: 12px; /* Slightly more rounded corners */
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08); /* Stronger, softer shadow */
 }
 
 /* Class to show content after loading */
 #appContent.show-content {
-    display: block; /* Or 'flex' if your main layout is flexbox */
+    display: block;
     opacity: 1;
 }
-
-/* Existing styles for the container are now applied to #appContent */
-/* .container {
-    max-width: 1200px;
-    margin: 20px auto;
-    background: #fff;
-    padding: 30px;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-} */
-
 
 h1, h2 {
     color: #0056b3;
     text-align: center;
-    margin-bottom: 20px;
+    margin-bottom: 25px; /* More space below headings */
+    font-weight: 600; /* Slightly bolder headings */
 }
 
-/* NEW: Authentication Section Styles */
+h1 {
+    font-size: 2.5em; /* Larger main title */
+}
+
+h2 {
+    font-size: 1.8em;
+}
+
+/* Authentication Section Styles (Kept as is, but consider combining with .form-container if similar) */
 .auth-section {
-    background-color: #e9ecef;
-    padding: 20px;
-    border-radius: 8px;
+    background-color: #f7f9fc; /* Lighter background for auth section */
+    padding: 25px;
+    border-radius: 10px;
     margin-bottom: 30px;
-    box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+    box-shadow: inset 0 1px 4px rgba(0,0,0,0.05);
     text-align: center;
 }
 
@@ -96,45 +98,52 @@ h1, h2 {
     font-weight: bold;
     margin-bottom: 15px;
     color: #0056b3;
+    display: flex; /* Use flexbox to center text and button */
+    justify-content: center;
+    align-items: center;
+    gap: 10px; /* Space between text and button */
 }
 
 .user-status-area span {
-    color: #333;
+    color: #555; /* Slightly darker text for better readability */
 }
 
 .user-status-area #currentUserRole {
-    text-transform: capitalize; /* Make role look nicer */
+    text-transform: capitalize;
 }
 
 .login-form-area {
     margin-top: 20px;
     padding-top: 20px;
-    border-top: 1px dashed #ccc;
+    border-top: 1px dashed #e0e0e0; /* Lighter dashed border */
 }
 
 .login-form-area h2 {
     margin-top: 0;
     font-size: 1.5em;
+    color: #333; /* Darker heading for login */
 }
 
 .auth-button {
-    padding: 10px 20px;
+    padding: 10px 25px; /* More padding */
     background-color: #007bff;
     color: white;
     border: none;
-    border-radius: 5px;
+    border-radius: 6px; /* Slightly more rounded buttons */
     cursor: pointer;
     font-size: 1em;
-    transition: background-color 0.3s ease;
+    font-weight: 600; /* Bolder button text */
+    transition: background-color 0.3s ease, transform 0.2s ease; /* Add transform for subtle animation */
     margin-top: 10px;
 }
 
 .auth-button:hover {
     background-color: #0056b3;
+    transform: translateY(-2px); /* Lift effect on hover */
 }
 
 .logout-button {
-    background-color: #dc3545; /* Red for logout */
+    background-color: #dc3545;
     margin-left: 15px;
 }
 
@@ -146,20 +155,25 @@ h1, h2 {
 #toggleFormButton {
     display: block;
     width: 100%;
-    padding: 10px 15px;
-    margin-bottom: 20px;
-    background-color: #007bff;
+    padding: 12px 15px; /* More padding */
+    margin-bottom: 30px; /* More space below */
+    background-color: #28a745; /* Green for add/show form */
     color: white;
     border: none;
-    border-radius: 5px;
+    border-radius: 8px; /* More rounded */
     cursor: pointer;
-    font-size: 1.1em;
-    transition: background-color 0.3s ease;
+    font-size: 1.15em; /* Slightly larger font */
+    font-weight: 600;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 2px 5px rgba(0,123,255,0.2); /* Subtle shadow */
 }
 
 #toggleFormButton:hover {
-    background-color: #0056b3;
+    background-color: #218838;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,123,255,0.3);
 }
+
 /* Ensure toggle button is hidden initially */
 #toggleFormButton[style*="display: none;"] {
     display: none !important;
@@ -167,65 +181,82 @@ h1, h2 {
 
 
 /* Form Section */
-.form-section {
-    background-color: #e9ecef;
-    padding: 20px;
-    border-radius: 8px;
+.form-container { /* Changed from .form-section to match your HTML more accurately */
+    background-color: #f7f9fc;
+    padding: 25px;
+    border-radius: 10px;
     margin-bottom: 30px;
-    box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+    box-shadow: inset 0 1px 4px rgba(0,0,0,0.05);
 }
 
-.form-group {
-    margin-bottom: 15px;
+.form-container h2 {
+    margin-top: 0;
+    color: #333;
 }
 
-.form-group label {
+/* Individual form group styling for better spacing */
+#talentForm label {
     display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
+    margin-bottom: 8px; /* More space below label */
+    font-weight: 600;
+    color: #555;
+    font-size: 0.95em;
 }
 
-.form-group input[type="text"],
-.form-group input[type="email"],
-.form-group input[type="number"],
-.form-group input[type="password"], /* NEW: for password input */
-.form-group select {
-    width: calc(100% - 22px); /* Account for padding and border */
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box; /* Include padding and border in the element's total width and height */
+#talentForm input[type="text"],
+#talentForm input[type="email"],
+#talentForm input[type="number"],
+#talentForm input[type="password"],
+#talentForm select {
+    width: 100%; /* Full width */
+    padding: 12px; /* More padding */
+    border: 1px solid #dcdcdc; /* Lighter border */
+    border-radius: 6px;
+    box-sizing: border-box;
     font-size: 1em;
+    margin-bottom: 15px; /* Space between inputs */
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-form button[type="submit"] {
+#talentForm input:focus,
+#talentForm select:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 0 3px rgba(0,123,255,0.25); /* Focus glow */
+    outline: none;
+}
+
+#talentForm button[type="submit"] {
     display: block;
     width: 100%;
-    padding: 10px 15px;
-    background-color: #28a745;
+    padding: 12px 15px;
+    background-color: #007bff; /* Use primary blue for submit */
     color: white;
     border: none;
-    border-radius: 5px;
+    border-radius: 8px;
     cursor: pointer;
-    font-size: 1.1em;
-    transition: background-color 0.3s ease;
+    font-size: 1.15em;
+    font-weight: 600;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    margin-top: 20px; /* More space above button */
 }
 
-form button[type="submit"]:hover {
-    background-color: #218838;
+#talentForm button[type="submit"]:hover {
+    background-color: #0056b3;
+    transform: translateY(-2px);
 }
 
 /* Feedback Messages */
 .feedback-message {
-    padding: 10px;
-    margin-top: 15px;
-    border-radius: 5px;
+    padding: 12px;
+    margin-top: 20px; /* More space */
+    border-radius: 6px;
     text-align: center;
-    transition: opacity 0.5s ease-in-out;
+    font-weight: 500;
     opacity: 0;
+    transition: opacity 0.5s ease-in-out;
 }
 
-.feedback-message.show { /* NEW: Add show class for immediate visibility */
+.feedback-message.show {
     opacity: 1;
 }
 
@@ -233,96 +264,124 @@ form button[type="submit"]:hover {
     background-color: #d4edda;
     color: #155724;
     border: 1px solid #c3e6cb;
-    opacity: 1;
 }
 
 .feedback-message.error {
     background-color: #f8d7da;
     color: #721c24;
     border: 1px solid #f5c6cb;
-    opacity: 1;
 }
 
 /* Input-specific error messages */
 .input-error {
-    color: red;
-    font-size: 0.85em;
-    margin-left: 5px;
-    display: inline-block;
-    vertical-align: middle;
+    color: #dc3545; /* Red for errors */
+    font-size: 0.8em;
+    margin-top: -10px; /* Pull it closer to the input */
+    margin-bottom: 10px; /* Space below error */
+    display: block; /* Make it a block element to take its own line */
 }
 
 
 /* Filters Section */
-.filters-section {
-    background-color: #e9ecef;
-    padding: 20px;
-    border-radius: 8px;
+.filters { /* Already correctly targets the element */
+    background-color: #f7f9fc;
+    padding: 25px;
+    border-radius: 10px;
     margin-bottom: 30px;
-    box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
-}
-
-.filters {
+    box-shadow: inset 0 1px 4px rgba(0,0,0,0.05);
     display: flex;
     flex-wrap: wrap;
-    gap: 15px;
-    justify-content: center;
+    gap: 20px; /* Increased gap */
+    justify-content: space-around; /* Distribute items evenly */
     align-items: flex-end;
+}
+
+.filters h2 {
+    width: 100%; /* Make heading take full width */
+    margin-bottom: 20px;
+    text-align: left; /* Align filter heading left */
+    color: #333;
+    font-size: 1.6em;
 }
 
 .filter-group {
     flex: 1;
-    min-width: 180px;
+    min-width: 200px; /* Slightly wider min-width */
+    max-width: 280px; /* Max width for individual filters */
 }
 
 .filter-group label {
     display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #555;
+    font-size: 0.95em;
 }
 
 .filter-group input,
 .filter-group select {
     width: 100%;
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+    padding: 10px;
+    border: 1px solid #dcdcdc;
+    border-radius: 6px;
     box-sizing: border-box;
+    font-size: 1em;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
+
+.filter-group input:focus,
+.filter-group select:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 0 3px rgba(0,123,255,0.25);
+    outline: none;
+}
+
 
 /* Export Button Style */
-.export-button {
-    width: 100%;
-    padding: 8px 15px;
-    background-color: #6c757d;
+#exportCsvBtn { /* Specific ID for export button */
+    display: block; /* Ensure it's a block element */
+    width: auto; /* Auto width based on content */
+    padding: 10px 20px;
+    background-color: #6c757d; /* Muted grey */
     color: white;
     border: none;
-    border-radius: 5px;
+    border-radius: 6px;
     cursor: pointer;
     font-size: 1em;
-    transition: background-color 0.3s ease;
-    margin-top: 25px;
+    font-weight: 500;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    margin: 20px auto 0 auto; /* Center the button, add top margin */
 }
 
-.export-button:hover {
+#exportCsvBtn:hover {
     background-color: #5a6268;
+    transform: translateY(-2px);
 }
 
 
 /* Table Styles */
-.talents-list-section {
+.talent-list { /* Updated to match your HTML */
     margin-top: 30px;
+    background-color: #f7f9fc; /* Light background for list section */
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: inset 0 1px 4px rgba(0,0,0,0.05);
+    overflow-x: auto; /* Enable horizontal scrolling for tables on small screens */
 }
 
 #talentTable {
     width: 100%;
-    border-collapse: collapse;
+    border-collapse: separate; /* Use separate for rounded corners on cells */
+    border-spacing: 0; /* Remove space between cells */
     margin-top: 20px;
+    border-radius: 8px; /* Apply border-radius to the table itself */
+    overflow: hidden; /* Hide overflowing content if rounded corners clip */
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
 }
 
 #talentTable th, #talentTable td {
-    border: 1px solid #ddd;
-    padding: 10px;
+    border: none; /* Remove individual cell borders */
+    padding: 12px 15px; /* More padding */
     text-align: left;
     vertical-align: middle;
 }
@@ -332,32 +391,54 @@ form button[type="submit"]:hover {
     color: white;
     cursor: pointer;
     position: relative;
+    font-weight: 600;
+    text-transform: uppercase; /* Uppercase table headers */
+    font-size: 0.9em;
 }
 
+/* Apply border-radius to specific table corners */
+#talentTable thead tr:first-child th:first-child { border-top-left-radius: 8px; }
+#talentTable thead tr:first-child th:last-child { border-top-right-radius: 8px; }
+#talentTable tbody tr:last-child td:first-child { border-bottom-left-radius: 8px; }
+#talentTable tbody tr:last-child td:last-child { border-bottom-right-radius: 8px; }
+
+
 #talentTable tbody tr:nth-child(even) {
-    background-color: #f2f2f2;
+    background-color: #fcfdff; /* Very light alternative row */
 }
 
 #talentTable tbody tr:hover {
-    background-color: #e0e0e0;
+    background-color: #e6f7ff; /* Light blue on hover */
+    transform: scale(1.005); /* Subtle grow effect */
+    transition: background-color 0.2s ease, transform 0.2s ease;
 }
 
 /* Action Buttons */
+.actions {
+    display: flex; /* Arrange buttons in a row */
+    gap: 8px; /* Space between buttons */
+    justify-content: flex-start; /* Align to the start */
+    flex-wrap: wrap; /* Allow buttons to wrap if space is limited */
+}
+
 .actions button {
-    padding: 6px 10px;
+    padding: 8px 12px; /* Adjusted padding */
     border: none;
-    border-radius: 4px;
+    border-radius: 5px; /* Slightly more rounded */
     cursor: pointer;
-    font-size: 0.9em;
-    margin-right: 5px;
-    transition: background-color 0.3s ease;
+    font-size: 0.85em; /* Slightly smaller font for compactness */
+    font-weight: 500;
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    flex-shrink: 0; /* Prevent buttons from shrinking */
 }
 
 .actions button:hover {
-    opacity: 0.8;
+    opacity: 1; /* Ensure full opacity */
+    transform: translateY(-1px); /* Subtle lift */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 
-.actions button.view-btn { /* View button */
+.actions button.view-btn {
     background-color: #17a2b8; /* Info color */
     color: white;
 }
@@ -366,97 +447,111 @@ form button[type="submit"]:hover {
     background-color: #138496;
 }
 
-.actions button.edit-btn { /* Edit button */
-    background-color: #007bff;
+.actions button.edit-btn {
+    background-color: #007bff; /* Primary blue */
     color: white;
 }
-
-.actions button.delete-btn { /* Delete button */
-    background-color: #dc3545;
-    color: white;
-}
-
-/* Pagination Controls */
-.pagination-section {
-    margin-top: 20px;
-    text-align: center;
-}
-
-.pagination-controls {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 15px;
-    padding: 10px;
-    background-color: #e9ecef;
-    border-radius: 8px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-}
-
-.pagination-controls button {
-    padding: 8px 15px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 1em;
-    transition: background-color 0.3s ease;
-}
-
-.pagination-controls button:hover:not(:disabled) {
+.actions button.edit-btn:hover {
     background-color: #0056b3;
 }
 
-.pagination-controls button:disabled {
-    background-color: #cccccc;
-    cursor: not-allowed;
+
+.actions button.delete-btn {
+    background-color: #dc3545; /* Red */
+    color: white;
+}
+.actions button.delete-btn:hover {
+    background-color: #c82333;
 }
 
-.pagination-controls span {
+
+/* Pagination Controls */
+.pagination { /* Updated to match your HTML */
+    margin-top: 30px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px; /* Increased gap */
+    padding: 15px;
+    background-color: #f7f9fc;
+    border-radius: 10px;
+    box-shadow: 0 1px 5px rgba(0,0,0,0.05);
+}
+
+.pagination button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1em;
+    font-weight: 600;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.pagination button:hover:not(:disabled) {
+    background-color: #0056b3;
+    transform: translateY(-2px);
+}
+
+.pagination button:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+.pagination span {
     font-weight: bold;
     color: #333;
+    font-size: 1.1em;
 }
 
 
 /* Modal Styles */
 .modal {
-    display: none; /* Hidden by default */
-    position: fixed; /* Stay in place */
-    z-index: 1000; /* Sit on top */
+    display: none;
+    position: fixed;
+    z-index: 1050; /* Higher z-index for modal */
     left: 0;
     top: 0;
-    width: 100%; /* Full width */
-    height: 100%; /* Full height */
-    overflow: auto; /* Enable scroll if needed */
-    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-    padding-top: 60px; /* Location of the box */
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.5); /* Darker overlay */
+    padding-top: 50px;
+    animation: fadeIn 0.3s ease-out; /* Fade in animation */
 }
 
 .modal-content {
-    background-color: #fefefe;
-    margin: 5% auto; /* 5% from the top and centered */
-    padding: 20px;
-    border: 1px solid #888;
-    width: 80%; /* Could be more or less, depending on screen size */
-    max-width: 600px; /* Max width for larger screens */
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-    position: relative; /* For the close button */
+    background-color: #ffffff;
+    margin: 5% auto;
+    padding: 30px; /* More padding */
+    border: none; /* No border */
+    width: 90%;
+    max-width: 650px; /* Slightly larger max width */
+    border-radius: 12px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.25); /* Stronger shadow */
+    position: relative;
+    animation: slideIn 0.3s ease-out; /* Slide in animation */
 }
 
 .modal-content h2 {
     color: #0056b3;
     text-align: center;
-    margin-bottom: 20px;
-    border-bottom: 1px solid #eee;
-    padding-bottom: 10px;
+    margin-bottom: 25px;
+    border-bottom: 1px solid #e0e0e0; /* Lighter border */
+    padding-bottom: 15px; /* More padding */
+    font-size: 1.8em;
 }
 
 .detail-item {
-    margin-bottom: 10px;
-    padding: 5px 0;
-    border-bottom: 1px dotted #eee;
+    margin-bottom: 12px; /* More space between items */
+    padding: 8px 0;
+    border-bottom: 1px dotted #eeeeee; /* Lighter dotted border */
+    display: flex; /* Use flexbox for detail items */
+    align-items: center;
 }
 
 .detail-item:last-child {
@@ -464,56 +559,114 @@ form button[type="submit"]:hover {
 }
 
 .detail-item strong {
-    display: inline-block;
-    width: 150px; /* Align labels */
+    flex-basis: 180px; /* Fixed width for labels */
     color: #555;
+    font-weight: 600;
+    margin-right: 15px; /* Space between label and value */
+}
+.detail-item span {
+    flex-grow: 1; /* Allow value to take remaining space */
+    color: #333;
 }
 
 
 .close-button {
-    color: #aaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
+    color: #888;
     position: absolute;
-    top: 10px;
+    top: 15px;
     right: 20px;
+    font-size: 32px; /* Larger close button */
+    font-weight: normal; /* Normal font weight */
     cursor: pointer;
+    transition: color 0.2s ease, transform 0.2s ease;
 }
 
 .close-button:hover,
 .close-button:focus {
-    color: black;
+    color: #333;
+    transform: rotate(90deg); /* Spin on hover */
     text-decoration: none;
-    cursor: pointer;
+}
+
+/* Modal Animations */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideIn {
+    from { transform: translateY(-50px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
 }
 
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
+    body {
+        padding: 15px; /* Reduce body padding on small screens */
+    }
+    #appContent {
+        margin: 20px auto;
+        padding: 20px;
+        border-radius: 8px; /* Smaller border-radius on small screens */
+    }
+    h1 {
+        font-size: 2em;
+    }
+    h2 {
+        font-size: 1.5em;
+    }
     .filters {
         flex-direction: column;
         align-items: stretch;
+        gap: 15px;
     }
     .filter-group {
         min-width: unset;
         width: 100%;
     }
-    .form-group input[type="text"],
-    .form-group input[type="email"],
-    .form-group input[type="number"],
-    .form-group input[type="password"], /* NEW: for password input */
-    .form-group select {
+    #talentForm input,
+    #talentForm select {
+        padding: 10px;
+    }
+    .form-container, .filters {
+        padding: 20px;
+        border-radius: 8px;
+    }
+    #talentTable th, #talentTable td {
+        padding: 10px;
+        font-size: 0.9em;
+    }
+    .actions {
+        flex-direction: column; /* Stack buttons vertically on small screens */
+        gap: 5px;
+    }
+    .actions button {
+        width: 100%; /* Full width for action buttons */
+        padding: 10px;
+        font-size: 0.9em;
+    }
+    .pagination {
+        flex-direction: column;
+        gap: 15px;
+        padding: 10px;
+    }
+    .pagination button {
         width: 100%;
     }
-    .export-button {
-        margin-top: 10px;
-    }
     .modal-content {
-        width: 95%; /* Make modal wider on small screens */
-        margin: 20px auto; /* Adjust margin */
+        width: 95%;
+        margin: 20px auto;
+        padding: 20px;
+        border-radius: 8px;
+    }
+    .detail-item {
+        flex-direction: column; /* Stack details vertically */
+        align-items: flex-start;
     }
     .detail-item strong {
-        width: 120px; /* Adjust label width for small screens */
+        width: 100%;
+        margin-right: 0;
+        margin-bottom: 5px; /* Space below label when stacked */
     }
 }
