@@ -331,6 +331,9 @@ form button[type="submit"]:hover {
 
 
 /* Filters Section */
+main{
+    min-width: 375px;
+}
 .filters {
     background-color: #f7f9fc;
     padding: 25px;
@@ -342,6 +345,7 @@ form button[type="submit"]:hover {
     gap: 20px;
     justify-content: space-around;
     align-items: flex-end;
+    min-width: 375px;
 }
 
 .filters h2 {
@@ -419,7 +423,7 @@ form button[type="submit"]:hover {
 
 #talentTable {
     width: 100%;
-    min-width: 400px;
+    min-width: 375px;
     border-collapse: separate;
     border-spacing: 0;
     margin-top: 20px;
