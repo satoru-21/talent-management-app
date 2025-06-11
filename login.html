@@ -5,38 +5,35 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - Talent Management System</title>
     <link rel="stylesheet" href="style.css">
+    <!-- Optional: Add a favicon if you have one -->
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
 </head>
 <body>
-    <header>
-        <h1>Login to Talent Management System</h1>
-    </header>
+    <!-- NEW: login-page-wrapper to center the entire content (title + login card) -->
+    <div class="login-page-wrapper">
+        <!-- Moved H1 inside the wrapper for centering -->
+        <h1 class="login-main-heading">Login to Talent Management System</h1>
 
-    <!-- NEW: auth-container wrapper to center the login section on the page -->
-    <main>
-        <div class="auth-container">
-            <section id="authSection" class="auth-section">
-                <h2>User Login</h2>
-                <div id="loginFormArea" class="form-container">
-                    <form id="loginForm">
-                        <!-- NEW: Wrap each label/input pair in a .form-group -->
-                        <div class="form-group">
-                            <label for="username">Username:</label>
-                            <input type="text" id="username" name="username" required>
-                        </div>
-
-                        <!-- NEW: Wrap each label/input pair in a .form-group -->
-                        <div class="form-group">
-                            <label for="password">Password:</label>
-                            <input type="password" id="password" name="password" required>
-                        </div>
-
-                        <button type="submit" class="auth-button">Login</button>
-                    </form>
-                    <p id="authFeedback" class="feedback-message"></p>
+        <!-- The main login card section -->
+        <section id="authSection" class="login-card"> 
+            <h2>User Login</h2>
+            <!-- Removed redundant loginFormArea div - styles will apply directly to .login-card and its children -->
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="username">Username:</label>
+                    <input type="text" id="username" name="username" required autocomplete="username">
                 </div>
-            </section>
-        </div>
-    </main>
+
+                <div class="form-group">
+                    <label for="password">Password:</label>
+                    <input type="password" id="password" name="password" required autocomplete="current-password">
+                </div>
+
+                <button type="submit" class="auth-button">Login</button>
+            </form>
+            <p id="authFeedback" class="feedback-message"></p>
+        </section>
+    </div>
 
     <!-- The script.js handles the login logic and redirects -->
     <script src="script.js"></script>

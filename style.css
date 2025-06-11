@@ -3,13 +3,14 @@ body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #eef2f7;
+    background-color: #eef2f7; /* Lighter, more modern background */
     color: #333;
     line-height: 1.6;
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    min-height: 100vh;
+    display: flex; /* Use flexbox to center content */
+    justify-content: center; /* Center content horizontally */
+    align-items: center; /* Center content vertically */
+    min-height: 100vh; /* Ensure body takes full viewport height */
+    overflow: auto; /* Allow scrolling if content is taller than screen */
 }
 
 /* Loading Overlay Styles */
@@ -19,27 +20,27 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: #ffffff;
+    background-color: #ffffff; /* White background for loading */
     display: flex;
-    flex-direction: column;
+    flex-direction: column; /* To stack spinner and text vertically */
     justify-content: center;
     align-items: center;
-    z-index: 1000;
+    z-index: 1000; /* Ensure it's on top of all other content */
     font-size: 1.5em;
-    color: #007bff;
+    color: #007bff; /* Match primary color */
     text-align: center;
-    transition: opacity 0.5s ease-in-out;
+    transition: opacity 0.5s ease-in-out; /* Smooth transition for hiding */
 }
 
 /* Spinner for Loading Overlay */
 .spinner {
-    border: 8px solid #f3f3f3;
-    border-top: 8px solid #007bff;
+    border: 8px solid #f3f3f3; /* Light grey */
+    border-top: 8px solid #007bff; /* Primary blue */
     border-radius: 50%;
-    width: 60px;
+    width: 60px; /* Slightly larger spinner */
     height: 60px;
     animation: spin 1s linear infinite;
-    margin-bottom: 20px;
+    margin-bottom: 20px; /* More space */
 }
 
 /* Spinner Animation */
@@ -48,18 +49,18 @@ body {
     100% { transform: rotate(360deg); }
 }
 
-/* Application Content Styles */
+/* Application Content Styles (This is for the main app AFTER login) */
 #appContent {
     display: none;
     opacity: 0;
     transition: opacity 0.5s ease-in-out;
-    width: 100%;
-    max-width: 1200px;
-    margin: 40px auto;
+    width: 100%; /* Take full width of parent (body) */
+    max-width: 1200px; /* Maximum width for the entire app */
+    margin: 40px auto; /* More vertical margin */
     background: #ffffff;
     padding: 30px;
-    border-radius: 12px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    border-radius: 12px; /* Slightly more rounded corners */
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08); /* Stronger, softer shadow */
 }
 
 /* Class to show content after loading */
@@ -68,69 +69,91 @@ body {
     opacity: 1;
 }
 
+/* Global H1, H2 Styles */
 h1, h2 {
     color: #0056b3;
     text-align: center;
-    margin-bottom: 25px;
-    font-weight: 600;
+    margin-bottom: 25px; /* More space below headings */
+    font-weight: 600; /* Slightly bolder headings */
 }
 
+/* Global H1 Style (Login Page H1 will override) */
 h1 {
-    font-size: 2.5em;
+    font-size: 2.5em; /* Larger main title */
 }
 
+/* Global H2 Style */
 h2 {
     font-size: 1.8em;
 }
 
-/* --- Login Page/Authentication Section Styles (Enhanced) --- */
-.auth-container { /* NEW: A wrapper for the entire auth area, can be centered easily */
+/* --- Login Page Specific Styles (Enhanced & Centralized) --- */
+
+.login-page-wrapper { /* NEW: Container for the entire login page content (h1 + login card) */
     display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: calc(100vh - 80px); /* Adjust to fill most of the screen */
-    padding: 20px;
-    box-sizing: border-box;
+    flex-direction: column; /* Stack heading and login card vertically */
+    justify-content: center; /* Center vertically within its own space */
+    align-items: center; /* Center horizontally */
+    width: 100%; /* Take full width of the body */
+    max-width: 700px; /* Set a max width for the entire centered login area */
+    padding: 30px; /* Padding around the whole login content */
+    box-sizing: border-box; /* Include padding in width calculation */
+    /* Remove min-height here; let content define height within body's min-height */
 }
 
-.auth-section {
+.login-main-heading { /* NEW: Style for the main "Login to Talent Management System" title on login.html */
+    color: #0056b3;
+    text-align: center;
+    font-size: 3em; /* Larger, more impactful title */
+    margin-bottom: 50px; /* Significant space below the title */
+    font-weight: 700; /* Even bolder */
+    line-height: 1.2;
+    max-width: 600px; /* Prevent it from being too wide */
+}
+
+.auth-section.login-card { /* Target the login form card specifically (was just .auth-section) */
     background-color: #ffffff; /* White background to make it stand out */
-    padding: 40px; /* More padding */
+    padding: 40px 50px; /* Increased horizontal padding */
     border-radius: 12px; /* Consistent rounded corners */
-    box-shadow: 0 8px 25px rgba(0,0,0,0.15); /* Prominent shadow */
-    margin: auto; /* Center it */
-    max-width: 450px; /* Max width for a clean login form */
+    box-shadow: 0 8px 30px rgba(0,0,0,0.15); /* Prominent shadow */
+    margin: auto; /* Center it horizontally within login-page-wrapper */
+    max-width: 480px; /* Increased max-width for the login card itself */
     width: 100%; /* Ensure it takes full width up to max-width */
+    box-sizing: border-box; /* Include padding in width calculation */
     text-align: center;
     border: 1px solid #e0e0e0; /* Subtle border */
     transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth hover effect */
 }
 
-.auth-section:hover {
+.auth-section.login-card:hover {
     transform: translateY(-5px); /* Slight lift on hover */
-    box-shadow: 0 12px 35px rgba(0,0,0,0.2);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.2);
 }
 
-.auth-section h2 {
+.auth-section h2 { /* User Login heading inside the card (specific to .auth-section) */
     color: #0056b3;
-    font-size: 2em; /* Larger login heading */
+    font-size: 2.2em; /* Slightly larger heading within the card */
     margin-bottom: 30px;
     position: relative;
     padding-bottom: 15px;
 }
 
-.auth-section h2::after { /* Underline effect for the heading */
+.auth-section h2::after {
     content: '';
     position: absolute;
     bottom: 0;
     left: 50%;
     transform: translateX(-50%);
-    width: 60px;
-    height: 3px;
+    width: 70px; /* Slightly wider underline */
+    height: 4px; /* Thicker underline */
     background-color: #007bff;
     border-radius: 2px;
 }
 
+/* Removed .login-form-area specific styles as HTML structure changed.
+   Form styles are handled by .form-group and general input/button rules. */
+
+/* User Status Area (for logged-in state on index.html) */
 .user-status-area {
     font-size: 1.1em;
     font-weight: bold;
@@ -154,13 +177,7 @@ h2 {
     text-transform: capitalize;
 }
 
-.login-form-area {
-    margin-top: 30px; /* More space above the form */
-    padding-top: 30px;
-    border-top: 1px solid #f0f0f0; /* Softer separation line */
-}
-
-/* Form Group for inputs */
+/* Form Group for inputs (applies to both login and talent forms) */
 .form-group {
     margin-bottom: 20px; /* More space between form fields */
     text-align: left; /* Align labels/inputs left */
@@ -195,34 +212,35 @@ h2 {
     outline: none;
 }
 
-/* Buttons */
+/* Buttons (applies to all submit/auth buttons) */
 .auth-button,
-form button[type="submit"] { /* Combined for consistent styling */
-    padding: 12px 25px;
+form button[type="submit"] {
+    padding: 14px 25px; /* More padding */
     background-color: #007bff;
     color: white;
     border: none;
     border-radius: 8px; /* More rounded */
     cursor: pointer;
-    font-size: 1.1em; /* Slightly larger font */
+    font-size: 1.15em; /* Slightly larger font */
     font-weight: 600;
     transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
-    width: 100%; /* Full width buttons */
-    margin-top: 20px; /* Space above buttons */
+    width: 100%;
+    margin-top: 25px; /* More space above buttons */
 }
 
 .auth-button:hover,
 form button[type="submit"]:hover {
     background-color: #0056b3;
-    transform: translateY(-3px); /* More pronounced lift */
-    box-shadow: 0 6px 15px rgba(0,123,255,0.3);
+    transform: translateY(-4px); /* More pronounced lift */
+    box-shadow: 0 8px 20px rgba(0,123,255,0.4); /* Stronger shadow */
 }
 
+/* Logout button (specifically for the "Logged in as" status, not on login page) */
 .logout-button {
     background-color: #dc3545;
-    margin-left: 15px; /* Keep margin left for layout next to status */
-    width: auto; /* Override 100% width for logout button in status area */
-    padding: 8px 15px; /* Smaller padding for logout button */
+    margin-left: 15px;
+    width: auto; /* Override 100% width */
+    padding: 8px 15px;
     font-size: 0.9em;
 }
 
@@ -231,53 +249,6 @@ form button[type="submit"]:hover {
     transform: translateY(-2px);
     box-shadow: 0 4px 10px rgba(220,53,69,0.2);
 }
-
-/* --- End Login Page/Authentication Section Styles --- */
-
-
-/* Toggle Form Button (kept consistent with previous enhancements) */
-#toggleFormButton {
-    display: block;
-    width: 100%;
-    padding: 12px 15px;
-    margin-bottom: 30px;
-    background-color: #28a745;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 1.15em;
-    font-weight: 600;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-    box-shadow: 0 2px 5px rgba(0,123,255,0.2);
-}
-
-#toggleFormButton:hover {
-    background-color: #218838;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0,123,255,0.3);
-}
-
-/* Ensure toggle button is hidden initially */
-#toggleFormButton[style*="display: none;"] {
-    display: none !important;
-}
-
-
-/* Form Section (for adding talent) */
-.form-container {
-    background-color: #f7f9fc;
-    padding: 25px;
-    border-radius: 10px;
-    margin-bottom: 30px;
-    box-shadow: inset 0 1px 4px rgba(0,0,0,0.05);
-}
-
-.form-container h2 {
-    margin-top: 0;
-    color: #333;
-}
-
 
 /* Feedback Messages */
 .feedback-message {
@@ -313,6 +284,49 @@ form button[type="submit"]:hover {
     margin-top: -10px;
     margin-bottom: 10px;
     display: block;
+}
+
+
+/* Toggle Form Button (kept consistent with previous enhancements) */
+#toggleFormButton {
+    display: block;
+    width: 100%;
+    padding: 12px 15px;
+    margin-bottom: 30px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1.15em;
+    font-weight: 600;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 2px 5px rgba(0,123,255,0.2);
+}
+
+#toggleFormButton:hover {
+    background-color: #218838;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,123,255,0.3);
+}
+
+#toggleFormButton[style*="display: none;"] {
+    display: none !important;
+}
+
+
+/* Form Section (for adding talent) */
+.form-container { /* This applies to talent form, NOT the login form's old .form-container */
+    background-color: #f7f9fc;
+    padding: 25px;
+    border-radius: 10px;
+    margin-bottom: 30px;
+    box-shadow: inset 0 1px 4px rgba(0,0,0,0.05);
+}
+
+.form-container h2 {
+    margin-top: 0;
+    color: #333;
 }
 
 
