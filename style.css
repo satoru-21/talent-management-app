@@ -1,15 +1,15 @@
 /* General Body Styles */
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* A slightly more modern font */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
-    padding: 0; /* Remove padding from body, let #appContent handle it */
-    background-color: #eef2f7; /* Lighter, more modern background */
+    padding: 0;
+    background-color: #eef2f7;
     color: #333;
     line-height: 1.6;
-    display: flex; /* Use flexbox to center content */
+    display: flex;
     justify-content: center;
-    align-items: flex-start; /* Align to the top of the viewport */
-    min-height: 100vh; /* Ensure body takes full viewport height */
+    align-items: flex-start;
+    min-height: 100vh;
 }
 
 /* Loading Overlay Styles */
@@ -19,27 +19,27 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: #ffffff; /* White background for loading */
+    background-color: #ffffff;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    z-index: 1000; /* Ensure it's on top of all other content */
+    z-index: 1000;
     font-size: 1.5em;
-    color: #007bff; /* Match primary color */
+    color: #007bff;
     text-align: center;
-    transition: opacity 0.5s ease-in-out; /* Smooth transition for hiding */
+    transition: opacity 0.5s ease-in-out;
 }
 
 /* Spinner for Loading Overlay */
 .spinner {
-    border: 8px solid #f3f3f3; /* Light grey */
-    border-top: 8px solid #007bff; /* Primary blue */
+    border: 8px solid #f3f3f3;
+    border-top: 8px solid #007bff;
     border-radius: 50%;
-    width: 60px; /* Slightly larger spinner */
+    width: 60px;
     height: 60px;
     animation: spin 1s linear infinite;
-    margin-bottom: 20px; /* More space */
+    margin-bottom: 20px;
 }
 
 /* Spinner Animation */
@@ -50,34 +50,33 @@ body {
 
 /* Application Content Styles */
 #appContent {
-    /* Initially hidden via JS and/or inline style, fade in when ready */
-    display: none; /* Will be set to 'block' or 'flex' by JS */
+    display: none;
     opacity: 0;
-    transition: opacity 0.5s ease-in-out; /* Smooth fade-in effect */
-    width: 100%; /* Take full width of parent (body) */
-    max-width: 1200px; /* Maximum width for the entire app */
-    margin: 40px auto; /* More vertical margin */
+    transition: opacity 0.5s ease-in-out;
+    width: 100%;
+    max-width: 1200px;
+    margin: 40px auto;
     background: #ffffff;
     padding: 30px;
-    border-radius: 12px; /* Slightly more rounded corners */
-    box-shadow: 0 4px 20px rgba(0,0,0,0.08); /* Stronger, softer shadow */
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
 }
 
 /* Class to show content after loading */
 #appContent.show-content {
-    display: block; /* Or 'flex' if your main layout is flexbox */
+    display: block;
     opacity: 1;
 }
 
 h1, h2 {
     color: #0056b3;
     text-align: center;
-    margin-bottom: 25px; /* More space below headings */
-    font-weight: 600; /* Slightly bolder headings */
+    margin-bottom: 25px;
+    font-weight: 600;
 }
 
 h1 {
-    font-size: 2.5em; /* Larger main title */
+    font-size: 2.5em;
 }
 
 h2 {
@@ -401,20 +400,17 @@ form button[type="submit"]:hover {
     padding: 25px;
     border-radius: 10px;
     box-shadow: inset 0 1px 4px rgba(0,0,0,0.05);
-    overflow-x: auto; /* IMPORTANT: This makes the container scroll horizontally */
-    -webkit-overflow-scrolling: touch; /* Adds momentum scrolling on iOS devices */
+    overflow-x: auto;
 }
 
 #talentTable {
-    width: 100%; /* Ensure table takes full width of its scrollable container */
+    width: 100%;
     border-collapse: separate;
     border-spacing: 0;
     margin-top: 20px;
     border-radius: 8px;
     overflow: hidden;
     box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-    min-width: 600px; /* NEW: Set a minimum width for the table itself */
-    /* Adjust this value based on your content - you want it to be wider than the narrowest mobile screen */
 }
 
 #talentTable th, #talentTable td {
@@ -422,7 +418,6 @@ form button[type="submit"]:hover {
     padding: 12px 15px;
     text-align: left;
     vertical-align: middle;
-    white-space: nowrap; /* NEW: Prevent text from wrapping in table cells by default */
 }
 
 #talentTable th {
@@ -552,44 +547,44 @@ form button[type="submit"]:hover {
 .modal {
     display: none;
     position: fixed;
-    z-index: 1050; /* Higher z-index for modal */
+    z-index: 1050;
     left: 0;
     top: 0;
     width: 100%;
     height: 100%;
     overflow: auto;
-    background-color: rgba(0,0,0,0.5); /* Darker overlay */
+    background-color: rgba(0,0,0,0.5);
     padding-top: 50px;
-    animation: fadeIn 0.3s ease-out; /* Fade in animation */
+    animation: fadeIn 0.3s ease-out;
 }
 
 .modal-content {
     background-color: #ffffff;
     margin: 5% auto;
-    padding: 30px; /* More padding */
-    border: none; /* No border */
+    padding: 30px;
+    border: none;
     width: 90%;
-    max-width: 650px; /* Slightly larger max width */
+    max-width: 650px;
     border-radius: 12px;
-    box-shadow: 0 8px 30px rgba(0,0,0,0.25); /* Stronger shadow */
+    box-shadow: 0 8px 30px rgba(0,0,0,0.25);
     position: relative;
-    animation: slideIn 0.3s ease-out; /* Slide in animation */
+    animation: slideIn 0.3s ease-out;
 }
 
 .modal-content h2 {
     color: #0056b3;
     text-align: center;
     margin-bottom: 25px;
-    border-bottom: 1px solid #e0e0e0; /* Lighter border */
-    padding-bottom: 15px; /* More padding */
+    border-bottom: 1px solid #e0e0e0;
+    padding-bottom: 15px;
     font-size: 1.8em;
 }
 
 .detail-item {
-    margin-bottom: 12px; /* More space between items */
+    margin-bottom: 12px;
     padding: 8px 0;
-    border-bottom: 1px dotted #eeeeee; /* Lighter dotted border */
-    display: flex; /* Use flexbox for detail items */
+    border-bottom: 1px dotted #eeeeee;
+    display: flex;
     align-items: center;
 }
 
@@ -598,13 +593,13 @@ form button[type="submit"]:hover {
 }
 
 .detail-item strong {
-    flex-basis: 180px; /* Fixed width for labels */
+    flex-basis: 180px;
     color: #555;
     font-weight: 600;
-    margin-right: 15px; /* Space between label and value */
+    margin-right: 15px;
 }
 .detail-item span {
-    flex-grow: 1; /* Allow value to take remaining space */
+    flex-grow: 1;
     color: #333;
 }
 
@@ -614,8 +609,8 @@ form button[type="submit"]:hover {
     position: absolute;
     top: 15px;
     right: 20px;
-    font-size: 32px; /* Larger close button */
-    font-weight: normal; /* Normal font weight */
+    font-size: 32px;
+    font-weight: normal;
     cursor: pointer;
     transition: color 0.2s ease, transform 0.2s ease;
 }
@@ -623,7 +618,7 @@ form button[type="submit"]:hover {
 .close-button:hover,
 .close-button:focus {
     color: #333;
-    transform: rotate(90deg); /* Spin on hover */
+    transform: rotate(90deg);
     text-decoration: none;
 }
 
@@ -642,31 +637,18 @@ form button[type="submit"]:hover {
 /* Responsive adjustments */
 @media (max-width: 768px) {
     body {
-        padding: 15px; /* Reduce body padding on small screens */
+        padding: 15px;
     }
     #appContent {
         margin: 20px auto;
         padding: 20px;
-        border-radius: 8px; /* Smaller border-radius on small screens */
+        border-radius: 8px;
     }
     h1 {
         font-size: 2em;
     }
     h2 {
         font-size: 1.5em;
-    }
-    /* Auth Section Responsive */
-    .auth-container {
-        min-height: auto; /* Allow container to shrink */
-        padding: 10px;
-    }
-    .auth-section { /* Adjust max-width for smaller screens */
-        max-width: 95%;
-        padding: 25px;
-        border-radius: 8px; /* Smaller radius on small screens */
-    }
-    .auth-section h2 {
-        font-size: 1.8em;
     }
     .filters {
         flex-direction: column;
@@ -681,24 +663,27 @@ form button[type="submit"]:hover {
     .form-group select {
         padding: 10px;
     }
-    .form-container, .filters {
+    .form-container, .filters, .auth-section { /* Apply consistent padding/radius */
         padding: 20px;
         border-radius: 8px;
     }
-
-    /* Table Responsive */
+    .auth-section { /* Adjust max-width for smaller screens */
+        max-width: 95%;
+        padding: 25px;
+    }
+    .auth-section h2 {
+        font-size: 1.8em;
+    }
     #talentTable th, #talentTable td {
         padding: 10px;
         font-size: 0.9em;
-        /* white-space: nowrap; is already set globally for these, no need to repeat unless overriding */
     }
-
     .actions {
-        flex-direction: column; /* Stack buttons vertically on small screens */
+        flex-direction: column;
         gap: 5px;
     }
     .actions button {
-        width: 100%; /* Full width for action buttons */
+        width: 100%;
         padding: 10px;
         font-size: 0.9em;
     }
@@ -717,12 +702,12 @@ form button[type="submit"]:hover {
         border-radius: 8px;
     }
     .detail-item {
-        flex-direction: column; /* Stack details vertically */
+        flex-direction: column;
         align-items: flex-start;
     }
     .detail-item strong {
         width: 100%;
         margin-right: 0;
-        margin-bottom: 5px; /* Space below label when stacked */
+        margin-bottom: 5px;
     }
 }
