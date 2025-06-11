@@ -10,7 +10,8 @@ body {
     justify-content: center; /* Center content horizontally */
     align-items: center; /* Center content vertically */
     min-height: 100vh; /* Ensure body takes full viewport height */
-    overflow: auto; /* Allow scrolling if content is taller than screen */
+    min-width: 375px;
+    overflow-y: auto; /* Allow scrolling if content is taller than screen */
 }
 
 /* Loading Overlay Styles */
@@ -331,9 +332,6 @@ form button[type="submit"]:hover {
 
 
 /* Filters Section */
-main{
-    min-width: 375px;
-}
 .filters {
     background-color: #f7f9fc;
     padding: 25px;
