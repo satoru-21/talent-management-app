@@ -675,7 +675,26 @@ form button[type="submit"]:hover {
     .auth-section {
         max-width: 95%;
         padding: 25px; /* Keep auth-section slightly more padded */
+
     }
+    /* Add this to your style.css */
+.auth-switch {
+    margin-top: 20px;
+    font-size: 0.95em;
+    color: #666;
+}
+
+.auth-switch a {
+    color: #007bff;
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.2s ease;
+}
+
+.auth-switch a:hover {
+    color: #0056b3;
+    text-decoration: underline;
+}
     .auth-section h2 {
         font-size: 1.8em;
     }

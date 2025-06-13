@@ -40,9 +40,20 @@ const detailYearsExperience = document.getElementById('detailYearsExperience');
 // Elements that appear only on login.html or are primary to login.html functionality
 const loginFormArea = document.getElementById('loginFormArea'); // The container for the login form
 const loginForm = document.getElementById('loginForm');
-const usernameInput = document.getElementById('username');
-const passwordInput = document.getElementById('password');
+const usernameInput = document.getElementById('username'); // Login username
+const passwordInput = document.getElementById('password'); // Login password
 const authFeedback = document.getElementById('authFeedback'); // Feedback for login/auth actions
+
+// NEW: Registration specific DOM elements
+const registerFormArea = document.getElementById('registerFormArea'); // The container for the register form
+const registerForm = document.getElementById('registerForm');
+const registerUsernameInput = document.getElementById('registerUsername');
+const registerPasswordInput = document.getElementById('registerPassword');
+const confirmPasswordInput = document.getElementById('confirmPassword');
+const registerFeedback = document.getElementById('registerFeedback');
+const showRegisterFormLink = document.getElementById('showRegisterFormLink');
+const showLoginFormLink = document.getElementById('showLoginFormLink');
+
 
 // Elements that appear on index.html for auth status
 const loggedInStatus = document.getElementById('loggedInStatus');
@@ -70,7 +81,7 @@ let currentUserRole = 'guest'; // 'guest', 'user', 'admin'
 
 
 // Base URL for your Flask API
-// **MAKE SURE THESE ARE YOUR ACTUAL RENDER BACKEND URLS**
+// *MAKE SURE THESE ARE YOUR ACTUAL RENDER BACKEND URLS*
 const API_BASE_URL = 'https://talent-management-app-9e8m.onrender.com/api/talents';
 const AUTH_API_BASE_URL = 'https://talent-management-app-9e8m.onrender.com/api';
 
@@ -82,16 +93,24 @@ function showFeedback(message, type = 'success', targetElement) {
     // Determine target element based on current page or provided targetElement
     let actualTarget = formFeedback; // Default for index.html talent form feedback
 
-    if (window.location.pathname.includes('login.html') && authFeedback) {
-        actualTarget = authFeedback; // For login page's auth feedback
-    } else if (targetElement) { // If a specific target was explicitly passed
+    // If specific target element is provided, use it directly
+    if (targetElement) {
         actualTarget = targetElement;
+    } else {
+        // Fallback for auth feedback if on login page and no specific target provided
+        if (window.location.pathname.includes('login.html') && authFeedback) {
+            actualTarget = authFeedback;
+        }
+        // Check if register feedback is needed (if registerFormArea is active)
+        if (registerFormArea && registerFormArea.style.display === 'block' && registerFeedback) {
+             actualTarget = registerFeedback;
+        }
     }
 
     if (!actualTarget) return; // Exit if no valid target element is found
 
     actualTarget.innerHTML = message;
-    actualTarget.className = `feedback-message ${type} show`;
+    actualTarget.className = `feedback-message ${type} show`; // Use backticks for template literal
     actualTarget.style.opacity = 1; // Ensure it's visible initially
 
     setTimeout(() => {
@@ -106,6 +125,7 @@ function showFeedback(message, type = 'success', targetElement) {
         actualTarget.addEventListener('transitionend', handler);
     }, 3000);
 }
+
 
 // Helper function to clear all specific input error messages
 function clearInputErrors() {
@@ -140,6 +160,23 @@ function clearFormAndErrors() {
     }
 }
 
+// --- NEW: Functions to toggle login/register forms ---
+function showLoginForm() {
+    if (loginFormArea) loginFormArea.style.display = 'block';
+    if (registerFormArea) registerFormArea.style.display = 'none';
+    if (authFeedback) authFeedback.textContent = ''; // Clear feedback
+    if (registerFeedback) registerFeedback.textContent = ''; // Clear feedback
+    clearInputErrors(); // Clear validation errors
+}
+
+function showRegisterForm() {
+    if (loginFormArea) loginFormArea.style.display = 'none';
+    if (registerFormArea) registerFormArea.style.display = 'block';
+    if (authFeedback) authFeedback.textContent = ''; // Clear feedback
+    if (registerFeedback) registerFeedback.textContent = ''; // Clear feedback
+    clearInputErrors(); // Clear validation errors
+}
+
 // Function to update UI based on authentication status and role
 async function updateUIForAuth(authenticated, role = 'guest', username = 'Guest') {
     isAuthenticated = authenticated;
@@ -147,8 +184,8 @@ async function updateUIForAuth(authenticated, role = 'guest', username = 'Guest'
 
     const currentPath = window.location.pathname;
 
-    // This is crucial: Hide the loading overlay once authentication check is done.
-    if (loadingOverlay) loadingOverlay.style.display = 'none';
+    // --- Critical: Manage loading overlay and app content visibility ---
+    if (loadingOverlay) loadingOverlay.style.display = 'none'; // Always hide overlay once auth check is done
 
     // --- Logic for when the user IS authenticated ---
     if (isAuthenticated) {
@@ -158,11 +195,15 @@ async function updateUIForAuth(authenticated, role = 'guest', username = 'Guest'
             return; // Exit function as we are redirecting
         } else {
             // If logged in and on the main (index.html) page
-            // Show the main content area by adding the class
+            // Show the main content area
             if (appContent) {
                 appContent.classList.add('show-content'); // Uses CSS class for display and transition
                 appContent.style.display = 'block'; // Ensure it's block for the CSS transition to work
             }
+
+            // Hide auth forms if they exist on index.html (they shouldn't normally, but for robustness)
+            if (loginFormArea) loginFormArea.style.display = 'none';
+            if (registerFormArea) registerFormArea.style.display = 'none';
 
             if (loggedInStatus) loggedInStatus.style.display = 'block';
             if (currentUserSpan) currentUserSpan.textContent = username;
@@ -170,9 +211,16 @@ async function updateUIForAuth(authenticated, role = 'guest', username = 'Guest'
             if (logoutButton) logoutButton.style.display = 'inline-block';
 
             // Show/hide elements based on role (only for index.html elements)
+            document.querySelectorAll('.filter-group, .talent-table-container, .pagination-controls').forEach(el => {
+                if (el) el.style.display = 'flex'; // Or 'block' as appropriate
+            });
+
+
             if (currentUserRole === 'admin') {
                 if (toggleFormButton) toggleFormButton.style.display = 'block';
                 if (exportCsvBtn) exportCsvBtn.style.display = 'block';
+                // Talent form is hidden by default and shown via toggle button
+                if (talentFormSection) talentFormSection.style.display = 'none';
             } else {
                 if (toggleFormButton) toggleFormButton.style.display = 'none';
                 if (talentFormSection) talentFormSection.style.display = 'none'; // Ensure add form is hidden for non-admins
@@ -191,7 +239,9 @@ async function updateUIForAuth(authenticated, role = 'guest', username = 'Guest'
             return; // Exit function as we are redirecting
         } else {
             // If not logged in and on the login page, ensure login form is visible
-            if (loginFormArea) loginFormArea.style.display = 'block'; // Ensure the login form container is visible
+            if (loginFormArea) loginFormArea.style.display = 'block'; // Show login form by default
+            if (registerFormArea) registerFormArea.style.display = 'none'; // Hide register form by default
+
             // Hide main page elements by ensuring the appContent class is removed and display is none
             if (appContent) {
                 appContent.classList.remove('show-content'); // Ensure it's hidden if somehow visible
@@ -204,6 +254,11 @@ async function updateUIForAuth(authenticated, role = 'guest', username = 'Guest'
             if (toggleFormButton) toggleFormButton.style.display = 'none';
             if (talentFormSection) talentFormSection.style.display = 'none';
             if (exportCsvBtn) exportCsvBtn.style.display = 'none';
+
+            // Hide all filter/table related elements explicitly if they appear on login.html due to structure
+            document.querySelectorAll('.filter-group, .talent-table-container, .pagination-controls').forEach(el => {
+                if (el) el.style.display = 'none';
+            });
         }
     }
 }
@@ -460,13 +515,16 @@ async function handleFormSubmit(event) {
             }
         } else {
             if (editingTalentId !== null) {
-                showFeedback(`Talent updated successfully!`, 'success', formFeedback);
+                showFeedback('Talent updated successfully!', 'success', formFeedback);
             } else {
                 showFeedback('Talent added successfully!', 'success', formFeedback);
             }
             await fetchTalents();
             await populateSkillFilter();
             clearFormAndErrors();
+            // Optionally hide the form after submission
+            if (toggleFormButton) toggleFormButton.textContent = 'Show Add Talent Form';
+            if (talentFormSection) talentFormSection.style.display = 'none';
         }
     } catch (error) {
         console.error('Network or API communication error:', error);
@@ -633,6 +691,7 @@ async function handleLogin(event) {
         if (response.ok) {
             showFeedback(`Welcome, ${result.username}! Redirecting...`, 'success', authFeedback);
             // On successful login, immediately redirect to the main page
+            // The checkLoginStatus on the new page will then handle the UI update.
             window.location.href = 'index.html';
         } else {
             showFeedback(`Login failed: ${result.error || 'Invalid credentials.'}`, 'error', authFeedback);
@@ -643,6 +702,75 @@ async function handleLogin(event) {
         showFeedback(`Network error during login: ${error.message}`, 'error', authFeedback);
     }
 }
+
+// NEW: Handle user registration (ONLY on login.html)
+async function handleRegister(event) {
+    event.preventDefault();
+    if (!registerUsernameInput || !registerPasswordInput || !confirmPasswordInput || !registerFeedback) return;
+
+    clearInputErrors(); // Clear previous errors
+
+    const username = registerUsernameInput.value.trim();
+    const password = registerPasswordInput.value.trim();
+    const confirmPassword = confirmPasswordInput.value.trim();
+
+    let isValid = true;
+    if (!username) {
+        showInputError('registerUsername', 'Username is required.');
+        isValid = false;
+    }
+    if (!password) {
+        showInputError('registerPassword', 'Password is required.');
+        isValid = false;
+    } else if (password.length < 6) {
+        showInputError('registerPassword', 'Password must be at least 6 characters.');
+        isValid = false;
+    }
+    if (!confirmPassword) {
+        showInputError('confirmPassword', 'Please confirm password.');
+        isValid = false;
+    } else if (password !== confirmPassword) {
+        showInputError('confirmPassword', 'Passwords do not match.');
+        isValid = false;
+    }
+
+    if (!isValid) {
+        showFeedback('Please correct the highlighted errors.', 'error', registerFeedback);
+        return;
+    }
+
+    try {
+        const response = await fetch(`${AUTH_API_BASE_URL}/register`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ username, password }),
+            credentials: 'include' // Important for session cookies
+        });
+
+        const result = await response.json();
+
+        if (response.ok) {
+            showFeedback(`Account "${username}" created successfully! Please log in.`, 'success', registerFeedback);
+            registerForm.reset();
+            setTimeout(() => {
+                showLoginForm(); // Switch back to login form after successful registration
+            }, 1500);
+        } else {
+            if (response.status === 400 && result.errors && result.errors.username) {
+                showInputError('registerUsername', result.errors.username);
+                showFeedback(result.errors.username, 'error', registerFeedback);
+            } else {
+                showFeedback(`Registration failed: ${result.error || response.statusText}`, 'error', registerFeedback);
+            }
+        }
+    } catch (error) {
+        console.error('Registration error:', error);
+        showFeedback(`Network error during registration: ${error.message}`, 'error', registerFeedback);
+    }
+}
+
 
 // Handle user logout (ONLY on index.html)
 async function handleLogout() {
@@ -657,7 +785,8 @@ async function handleLogout() {
         const result = await response.json();
 
         if (response.ok) {
-            showFeedback('You have been logged out. Redirecting...', 'success', formFeedback); // Show on index.html
+            // Show feedback on index.html, then redirect to login
+            showFeedback('You have been logged out. Redirecting...', 'success', formFeedback);
             // On successful logout, redirect to login page
             window.location.href = 'login.html';
         } else {
@@ -692,20 +821,40 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Determine the current page
     const currentPath = window.location.pathname;
 
+    // --- Loading Overlay Initial State ---
+    // Show loading overlay immediately on DOMContentLoaded for index.html
+    // For login.html, the overlay is not needed, as it transitions directly to the form.
+    if (!currentPath.includes('login.html')) {
+        if (loadingOverlay) loadingOverlay.style.display = 'flex'; // Use flex to center content
+        if (appContent) appContent.style.display = 'none'; // Ensure content is hidden until authenticated
+    } else {
+        if (loadingOverlay) loadingOverlay.style.display = 'none'; // No overlay for login page
+        if (loginFormArea) loginFormArea.style.display = 'block'; // Ensure login form is visible by default
+        if (registerFormArea) registerFormArea.style.display = 'none'; // Ensure register form is hidden by default
+    }
+
     // Attach event listeners conditional on the current page
     if (currentPath.includes('login.html')) {
-        // Only attach login form listener if on login page
+        // Only attach login/register form listeners if on login page
         if (loginForm) {
             loginForm.addEventListener('submit', handleLogin);
         }
-        // Immediately hide loading overlay for login page as it's not needed after DOMContentLoaded
-        if (loadingOverlay) loadingOverlay.style.display = 'none';
-        // Ensure login form area is visible (if needed, though CSS should default to block)
-        if (loginFormArea) loginFormArea.style.display = 'block';
+        if (registerForm) {
+            registerForm.addEventListener('submit', handleRegister);
+        }
+        if (showRegisterFormLink) {
+            showRegisterFormLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                showRegisterForm();
+            });
+        }
+        if (showLoginFormLink) {
+            showLoginFormLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                showLoginForm();
+            });
+        }
     } else { // This is for index.html
-        // Show loading overlay immediately on index.html until checkLoginStatus is done
-        if (loadingOverlay) loadingOverlay.style.display = 'flex'; // Use flex to center content
-
         // Add index.html specific event listeners only if elements exist
         if (toggleFormButton) {
             toggleFormButton.addEventListener('click', () => {
@@ -753,7 +902,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 fetchTalents();
             });
         }
-        // --- NEW: Event listeners for Pagination & Sorting (moved from previous truncated section) ---
+        // --- Event listeners for Pagination & Sorting ---
         if (prevPageBtn) {
             prevPageBtn.addEventListener('click', () => {
                 if (currentPage > 1) {

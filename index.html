@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="style.css">
     <style>
         /* This is a temporary measure for initial page load flash.
-           The actual display logic is controlled by JavaScript and style.css */
+            The actual display logic is controlled by JavaScript and style.css */
         #appContent {
             display: none;
             opacity: 0;
@@ -60,13 +60,55 @@
     <div id="appContent">
         <header>
             <h1>Talent Management System</h1>
-            <div id="loggedInStatus" style="display: none;">
-                Logged in as: <span id="currentUser"></span> (<span id="currentUserRole"></span>)
-                <button id="logoutButton">Logout</button>
-            </div>
-        </header>
+            </header>
 
         <main>
+            <div class="auth-container">
+                <section class="auth-section">
+                    <div class="user-status-area" id="loggedInStatus" style="display: none;">
+                        Logged in as: <span id="currentUser"></span> (<span id="currentUserRole"></span>)
+                        <button id="logoutButton" class="logout-button">Logout</button>
+                    </div>
+
+                    <div id="loginFormArea" class="login-form-area">
+                        <h2>Login to Talent Management</h2>
+                        <form id="loginForm">
+                            <div class="form-group">
+                                <label for="loginUsername">Username:</label>
+                                <input type="text" id="loginUsername" name="username" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="loginPassword">Password:</label>
+                                <input type="password" id="loginPassword" name="password" required>
+                            </div>
+                            <p id="loginFeedback" class="feedback-message"></p>
+                            <button type="submit" class="auth-button">Login</button>
+                        </form>
+                        <p class="auth-switch">Don't have an account? <a href="#" id="showRegisterFormLink">Create one</a></p>
+                    </div>
+
+                    <div id="registerFormArea" class="login-form-area" style="display: none;">
+                        <h2>Create Account</h2>
+                        <form id="registerForm">
+                            <div class="form-group">
+                                <label for="registerUsername">Username:</label>
+                                <input type="text" id="registerUsername" name="username" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="registerPassword">Password:</label>
+                                <input type="password" id="registerPassword" name="password" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="confirmPassword">Confirm Password:</label>
+                                <input type="password" id="confirmPassword" name="confirmPassword" required>
+                            </div>
+                            <p id="registerFeedback" class="feedback-message"></p>
+                            <button type="submit" class="auth-button">Register</button>
+                        </form>
+                        <p class="auth-switch">Already have an account? <a href="#" id="showLoginFormLink">Login here</a></p>
+                    </div>
+                </section>
+            </div>
             <section class="filters">
                 <h2>Filters & Search</h2>
                 <div>
@@ -158,6 +200,7 @@
                 <p><strong>Years Experience:</strong> <span id="detailYearsExperience"></span></p>
             </div>
         </div>
-    </div> <script src="script.js"></script>
+    </div>
+    <script src="script.js"></script>
 </body>
 </html>
